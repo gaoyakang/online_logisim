@@ -7,7 +7,7 @@ class OutputView extends CircleNode {
         const { model } = this.props;
         const { x, y, radius } = model;
         // 获取样式属性
-        const style = model.getNodeStyle();
+        // const style = model.getNodeStyle();
     
         // 计算节点路径
         return h('g', {}, [
@@ -31,7 +31,7 @@ class OutputView extends CircleNode {
                 cx: x - radius , // 圆心的x坐标与矩形中心的x坐标相同
                 cy: y, // 圆心的y坐标与矩形中心的y坐标相同
                 r: 3, // 圆的半径，可以根据需要调整
-                fill: 'blue', // 确保圆内部是空的
+                fill: 'orange', // 确保圆内部是空的
             }),
         ]);
     }
@@ -49,7 +49,32 @@ class OutputModel extends CircleNodeModel {
         const style = super.getNodeStyle();
         style.stroke = 'black';
         return style;
-      }
+    }
+
+    // 外选框样式
+    getOutlineStyle() {
+        const style = super.getOutlineStyle()
+        style.stroke = 'none'
+        if (style.hover) {
+          style.hover.stroke = 'none'
+        }
+        return style
+    }
+
+    // 自定义锚点
+    getDefaultAnchor() {
+        const anchors = [];
+        const { x, y, radius } = this;
+        anchors.push({
+            x: x - radius, // 锚点在圆的最左侧
+            y: y,
+            id: 'left',
+            type: 'left',
+            direction: 'left',
+            style: { fill: 'orange', r: 3 } // 设置锚点样式，与第三个circle相同
+        });
+        return anchors;
+    }
 }
 
 export default {

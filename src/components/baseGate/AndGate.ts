@@ -22,19 +22,19 @@ class AndGateView extends RectNode {
                 cx: x + width*(3/2),
                 cy: y + width/2,
                 r: 5,
-                fill: 'yellow',
+                fill: 'orange',
             }),
             h('circle', {
                 cx: x,
                 cy: y + width/4,
                 r: 5,
-                fill: 'blue',
+                fill: 'orange',
             }),
             h('circle', {
                 cx: x,
                 cy: y + width*3/4,
                 r: 5,
-                fill: 'blue',
+                fill: 'orange',
             }),
         ]);
     }
@@ -47,20 +47,55 @@ class AndGateModel extends RectNodeModel {
         super.initNodeData(data);
         this.width = 30;
       }
+  
     // 节点样式
     getNodeStyle() {
         const style = super.getNodeStyle();
         style.stroke = 'black';
-        style['node-selected-box'] = false; // 隐藏选中框
         return style;
-      }
-      // 自定义锚点
-    getAnchor() {
+    }
+
+    // 外选框样式
+    getOutlineStyle() {
+        const style = super.getOutlineStyle()
+        style.stroke = 'none'
+        if (style.hover) {
+          style.hover.stroke = 'none'
+        }
+        return style
+    }
+
+    // 自定义锚点
+    getDefaultAnchor() {
+        const { x, y, width } = this;
         return [
-            { id: 'top', x: this.width / 2, y: 0 },
-            { id: 'bottom', x: this.width / 2, y: this.height },
-            { id: 'left-top', x: 0, y: this.height / 4 },
-            { id: 'left-bottom', x: 0, y: this.height * 3 / 4 },
+            // 左侧上方锚点
+            {
+                x: x,
+                y: y + width / 4,
+                id: 'left-top',
+                type: 'left-top',
+                direction: 'top',
+                style: { r: 5, fill: 'orange' }
+            },
+            // 左侧下方锚点
+            {
+                x: x,
+                y: y + width * 3 / 4,
+                id: 'left-bottom',
+                type: 'left-bottom',
+                direction: 'bottom',
+                style: { r: 5, fill: 'orange' }
+            },
+            // 右侧锚点
+            {
+                x: x + width * (3/2),
+                y: y + width / 2,
+                id: 'right',
+                type: 'right',
+                direction: 'right',
+                style: { r: 5, fill: 'orange' }
+            }
         ];
     }
 }
