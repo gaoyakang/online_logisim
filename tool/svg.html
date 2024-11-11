@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 绘制一个svg图片，起点为(100,100)向左到(95,100) 向上到(95,105) 向右到(100,105) ，
+        // 该图不闭合，然后再绘制一个以(100,102.5)为圆心，半径为2.5的圆弧，圆弧起点和终点分别是(100,100) 
+        // 和(100,105)，圆弧不闭合，再接着绘制起点为(95,101.25)向左到(92.5,101.25)的直线和起点为(95,103.75)
+        // 向左到(92.5,103.75)的直线，再接着绘制起点为(102.5,102.5)向右到(105,102.5)的直线
+        // 线宽0.5
+    </script>
+    <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">   
+        <!-- 绘制不闭合的三角形形状 -->
+        <path d="M 18 18
+                 L 17.1 18
+                 L 17.1 18.675
+                 L 18 18.675" 
+              fill="none" stroke="black" stroke-width="0.25" />
+        <!-- 绘制不闭合的圆弧 -->
+        <path d="M 18 18
+                 A 1.35 1.35 0 0 1 18 18.675" 
+              fill="none" stroke="black" stroke-width="0.25" />
+        <!-- 绘制两条不闭合的直线 -->
+        <path d="M 17.1 18.3125
+                 L 16.575 18.3125" 
+              fill="none" stroke="black" stroke-width="0.25" />
+        <path d="M 17.1 18.6875
+                 L 16.575 18.6875" 
+              fill="none" stroke="black" stroke-width="0.25" />
+        <!-- 绘制第三条不闭合的直线 -->
+        <path d="M 18.225 18.45
+                 L 18.525 18.45" 
+              fill="none" stroke="black" stroke-width="0.25" />
+    </svg>
+</body>
+</html>

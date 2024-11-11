@@ -23,21 +23,18 @@ class AndGateView extends RectNode {
                 cy: y + width/2,
                 r: 5,
                 fill: 'yellow',
-                class: 'anchor'
             }),
             h('circle', {
                 cx: x,
                 cy: y + width/4,
                 r: 5,
                 fill: 'blue',
-                class: 'anchor'
             }),
             h('circle', {
                 cx: x,
                 cy: y + width*3/4,
                 r: 5,
                 fill: 'blue',
-                class: 'anchor'
             }),
         ]);
     }

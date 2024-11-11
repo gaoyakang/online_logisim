@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVG生成器</title>
+    <style>
+      body {
+          margin: 0;
+          padding: 0;
+        }
+        .container {
+          position: relative;
+          left: 730px;
+          top: -200px;
+        }
+        #svgInput {
+          width: 300px;
+          height: 100px;
+          margin: 10px 0;
+        }
+        #imgUrl {
+          width: 300px;
+          height: 100px;
+          margin-top: 55px;
+        }
+        button {
+          margin-top: 25px;
+        }
+      .grid-container {
+        margin-left: 80px;
+        margin-top: 100px;
+        display: grid;
+        grid-template-columns: repeat(36, 13px);
+        grid-template-rows: repeat(36, 13px);
+        gap: 1px;
+        width: 503px;
+        height: 503px;
+        background-color: #fff;
+      }
+      .grid-item {
+        width: 13px;
+        height: 13px;
+        background-color: #fff;
+        border: 1px solid #000;
+        cursor: pointer;
+      }
+      .grid-item.red {
+        background-color: red;
+      }
+      .grid-item.blue {
+        background-color: blue;
+      }
+      .grid-item.black {
+        background-color: black;
+      }
+      .svgContainer{
+        margin-left: 620px;
+        margin-top: -300px;
+        width: 37px;
+        height: 37px;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- 像素选取区域 -->
+      <div id="gridContainer" class="grid-container"></div>
+      <!-- svg图实时展示区域 -->
+      <div class="svgContainer">
+        <svg
+          id="svgCanvas"
+          width="36"
+          height="36"
+          xmlns="http://www.w3.org/2000/svg"
+        ></svg>
+      </div>
+      <!-- svg转base64区域 -->
+      <div class="container">
+        <div>
+          <textarea id="svgInput" placeholder="在这里输入SVG代码"></textarea>
+        </div>
+        <div style="margin-left: 6px;">
+          <button onClick="svgimgBase64()" class="btn_trans">Svg图转Svg码</button>
+          <button onClick="svgBase64()" class="btn_trans">Svg码转Base64</button>
+          <button onClick="clearText()">清空输入</button>
+        </div>
+        <div>
+          <div>
+            <textarea id="imgUrl" placeholder="生成的Base64地址"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <script>
+      const gridContainer = document.getElementById("gridContainer");
+      const svgCanvas = document.getElementById("svgCanvas");
+      const gridSize = 36;
+      const squareSize = 13; // 每个小方格的边长
+
+      // 创建36*36个小方格
+      for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+          // 标注中心点
+          if (i === 18 && j === 18) {
+            const square = document.createElement("div");
+            square.className = "grid-item";
+            square.style.gridColumnStart = i + 1;
+            square.style.gridRowStart = j + 1;
+            square.classList.toggle("red");
+            square.addEventListener("click", function (event) {
+              // 切换红色背景
+              this.classList.toggle("red");
+              // 在SVG中添加或移除一个rect
+              addOrRemoveRect(svgCanvas, this, i, j);
+            });
+            gridContainer.appendChild(square);
+          } else {
+            const square = document.createElement("div");
+            square.className = "grid-item";
+            square.style.gridColumnStart = i + 1;
+            square.style.gridRowStart = j + 1;
+            square.addEventListener("click", function (event) {
+              // 切换红色背景
+              this.classList.toggle("red");
+              // 在SVG中添加或移除一个rect
+              addOrRemoveRect(svgCanvas, this, i, j);
+            });
+            gridContainer.appendChild(square);
+          }
+        }
+      }
+      // 同步像素点到svg图案
+      function addOrRemoveRect(svg, item, x, y) {
+        const rect = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "rect"
+        );
+        rect.setAttribute("x", x);
+        rect.setAttribute("y", y);
+        rect.setAttribute("width", 1);
+        rect.setAttribute("height", 1);
+        rect.setAttribute("fill", item.classList.contains('red') ? 'blue' : 'none');
+        rect.setAttribute("stroke", "none");
+
+        // 查找之前的颜色
+        const existingRect = svg.querySelector(`rect[x="${x}"][y="${y}"]`);
+        if (existingRect) {
+          svg.removeChild(existingRect);
+        }
+
+        svg.appendChild(rect);
+      }
+      
+      // 清空输入框
+      function clearText(){
+             document.getElementById("svgInput").value = '';
+             document.getElementById("imgUrl").value = '';
+      }
+
+      // svg转base64
+      function svgBase64(svgstr='') {
+        // 获取用户输入的SVG字符串
+        const svgString = document.getElementById("svgInput").value || svgstr;
+
+        // 将SVG字符串转换为DOM节点
+        const parser = new DOMParser();
+        const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
+        const svgNode = svgDoc.documentElement;
+
+        // 序列化DOM节点为字符串
+        const serializer = new XMLSerializer();
+        const s = serializer.serializeToString(svgNode);
+
+        // 编码为Base64
+        const ImgBase64 = `data:image/svg+xml;base64,${window.btoa(unescape(encodeURIComponent(s)))}`;
+
+
+        // 将Base64字符串设置到textarea中
+        document.getElementById("imgUrl").value = ImgBase64;
+      }
+      
+      // 图转svg码
+      function svgimgBase64(){
+        document.getElementById("svgInput").value = document.getElementById("svgCanvas").outerHTML
+      }
+   </script>
+  </body>
+</html>

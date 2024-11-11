@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Svg转base64</title>
+    <style>
+      /* 基本样式 */
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      margin-top: 40px;
+    }
+    #svgInput {
+      width: 100%;
+      height: 100px;
+      margin: 10px 0;
+    }
+    #imgUrl {
+      width: 100%;
+      height: 100px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 10px;
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    /* 移动端适配样式 */
+    @media (max-width: 768px) {
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      #svgInput, #imgUrl {
+        width: calc(100% - 20px);
+      }
+      button {
+        margin-top: 5px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+    }
+    </style>
+  </head>
+  <body>
+    <div style="text-align: center; margin-top: 20px;">icon网址：<a href="https://www.iconfont.cn/">iconfont</a></div>
+    <div class="container">
+      <div>
+        <textarea id="svgInput" placeholder="在这里输入SVG代码"></textarea>
+      </div>
+      <button onClick="svgBase64()" class="btn_trans">Svg 转 Base64</button>
+      <button onClick="clearText()">清空</button>
+      <div style="margin-left: 20px">
+        <div>
+          <textarea id="imgUrl" placeholder="生成的Base64地址"></textarea>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: center;">
+      <img id="myImg" src="" />
+    </div>
+    <script>
+        function clearText(){
+             document.getElementById("svgInput").value = '';
+             document.getElementById("imgUrl").value = '';
+             const myImg = document.getElementById("myImg").src=''; 
+        }
+      function svgBase64() {
+        // 获取用户输入的SVG字符串
+        const svgString = document.getElementById("svgInput").value;
+
+        // 将SVG字符串转换为DOM节点
+        const parser = new DOMParser();
+        const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
+        const svgNode = svgDoc.documentElement;
+
+        // 序列化DOM节点为字符串
+        const serializer = new XMLSerializer();
+        const s = serializer.serializeToString(svgNode);
+
+        // 编码为Base64
+        const ImgBase64 = `data:image/svg+xml;base64,${window.btoa(unescape(encodeURIComponent(s)))}`;
+
+
+        // 将Base64字符串设置到textarea中
+        document.getElementById("imgUrl").value = ImgBase64;
+
+        const myImg = document.getElementById("myImg"); // 获取Img
+        myImg.src = ImgBase64;
+      }
+    </script>
+  </body>
+</html>

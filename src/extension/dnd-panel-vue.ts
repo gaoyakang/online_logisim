@@ -141,8 +141,11 @@ class DndPanelVue {
         });
       },
     }, [
-      h('div', {
+      h('img', {
         class: "lf-dnd-shape",
+        props:{
+          'src':shapeItem.icon ? `url(${shapeItem.icon})` : ''
+        },
         style: {
           'background-image': shapeItem.icon ? `url(${shapeItem.icon})` : ''
         },
