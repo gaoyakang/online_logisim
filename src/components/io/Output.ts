@@ -16,8 +16,25 @@ class OutputView extends CircleNode {
       stroke: "none", // 圆环的边框颜色
       fill: "black", // 确保圆内部是空的
     };
-    const currentMode =
-      properties.status === "simulation" ? simulationStyle : normalStyle;
+    // const currentMode =
+    //   properties.status === "simulation" ? simulationStyle : normalStyle;
+
+    const clickedStyle = {
+        stroke: "none", // 圆环的边框颜色
+        fill: "green", // 确保圆内部是空的
+    };
+  
+    // 确定样式
+    let currentMode;
+    if((properties.status === "simulation")){
+      if(properties.clicked){
+        currentMode = clickedStyle;
+      }else{
+        currentMode = simulationStyle
+      }
+    }else{
+      currentMode = normalStyle;
+    }
 
     // 计算节点路径
     return h("g", {}, [

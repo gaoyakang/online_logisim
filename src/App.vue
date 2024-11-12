@@ -17,6 +17,8 @@ import Output from "./components/io/Output.ts";
 
 const containerRef = ref(); // 画布容器引用
 const simulationActive = ref(false); // 仿真按钮的状态
+const inputActive = ref(false); // 输入是否被点击
+const edgeStatus = ref(0); // 连线的状态
 const dndData = ref([
   {
     group: "基本逻辑门",
@@ -68,8 +70,9 @@ onMounted(() => {
   // 3.设置插件
   lf = setPlugins(lf);
 
-  // 4.监听连线
+  // 4.监听连线和节点事件
   lf = onEdgeConnected(lf);
+  lf = onNodeClick(lf);
 
   // 5.渲染lf
   renderLF(lf);
@@ -188,8 +191,18 @@ const setControlPlugin = (lf: LogicFlow) => {
 // 监听边的创建事件
 const onEdgeConnected = (lf: LogicFlow) => {
   // TODO: 确定连接点之间是否允许连接
+  // lf.on("edge:add", (edge) => {
+  //   const { id, sourceNodeId, targetNodeId } = edge.data
+  //   console.log(id, sourceNodeId, targetNodeId )
+  //   lf.updateAttributes(id,{
+  //     style:{
+  //       stroke: 'green', // 设置边的颜色为绿色
+  //     }
+  //   })
+  // })
   return lf;
 }
+
 // 渲染lf
 const renderLF = (lf: LogicFlow) => {
   lf.render({
@@ -201,6 +214,40 @@ const renderLF = (lf: LogicFlow) => {
   lf.extension.miniMap.show(containerRef.value.offsetWidth - 170, containerRef.value.offsetHeight - 320)
 }
 
+// 监听节点点击
+const onNodeClick = (lf: LogicFlow) => {
+  lf.on('node:click', (node) => {
+    const { type, properties } = node.data;
+    if(properties.status === 'simulation'){
+      if(type === "Input"){
+        const edgeId = lf.graphModel.edges[0].id
+        const sourceNodeId = lf.graphModel.edges[0].sourceNodeId
+        const targetNodeId = lf.graphModel.edges[0].targetNodeId
+        if(edgeStatus.value === 1){
+          edgeStatus.value = 0;
+        }else{
+          edgeStatus.value = 1;
+        }
+
+        // 设置边的颜色为绿色
+        lf.updateAttributes(edgeId,{
+          style:{
+            stroke: (edgeStatus.value === 1) ? 'green' : 'black'
+          }
+        })
+        // 设置2节点的颜色为绿色
+        lf.setProperties(sourceNodeId, {
+          clicked: !inputActive.value
+        });
+        lf.setProperties(targetNodeId, {
+          clicked: !inputActive.value
+        });
+        inputActive.value = !inputActive.value
+      }
+    }
+  })
+  return lf;
+}
 </script>
 
 <style scoped>
