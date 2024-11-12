@@ -5,10 +5,21 @@ class InputView extends RectNode {
     getShape() {
         // 获取形状属性
         const { model } = this.props;
-        const { x, y, width,height,radius } = model;
+        const { x, y, width,height,radius, properties } = model;
         // 获取样式属性
         const style = model.getNodeStyle();
-    
+
+        // 不同模式下的样式
+        const normalStyle = {
+            stroke: 'black', // 圆环的边框颜色
+            fill: 'none', // 确保圆内部是空的
+        }
+        const simulationStyle = {
+            stroke: 'none', // 圆环的边框颜色
+            fill: 'black', // 确保圆内部是空的
+        }
+        const currentMode = (properties.status === 'simulation') ? simulationStyle : normalStyle
+
         // 计算节点路径
         return h('g', {}, [
             h('rect', {
@@ -24,8 +35,8 @@ class InputView extends RectNode {
                 cx: x+width/2, // 圆心的x坐标与矩形中心的x坐标相同
                 cy: y+height/2, // 圆心的y坐标与矩形中心的y坐标相同
                 r: radius, // 圆的半径，可以根据需要调整
-                stroke: 'black', // 圆环的边框颜色
-                fill: 'none', // 确保圆内部是空的
+                stroke: currentMode.stroke, // 圆环的边框颜色
+                fill: currentMode.fill, // 确保圆内部是空的
                 'stroke-width': 2, // 圆环的宽度，可以根据需要调整
             }),
             h('circle', {
@@ -46,6 +57,7 @@ class InputModel extends RectNodeModel {
         this.width = 20;
         this.height = 20;
         this.radius = 5;
+        this.properties.status = 'normal'
       }
     // 节点样式
     getNodeStyle() {

@@ -7,21 +7,27 @@
 <script setup lang="ts">
 import { onMounted,ref } from "vue";
 import LogicFlow from '@logicflow/core';
-import { Control, SelectionSelect } from '@logicflow/extension';
+import { BezierEdge, BezierEdgeModel } from '@logicflow/core';
+import { Control, SelectionSelect, MiniMap } from '@logicflow/extension';
 import { DndPanelVue } from "./extension/dnd-panel-vue";
 
 import AndGate from "./components/baseGate/AndGate.ts";
 import Input from "./components/io/Input.ts";
 import Output from "./components/io/Output.ts";
-
 import './extension/dnd-panel.ts'
 
 LogicFlow.use(DndPanelVue);
 LogicFlow.use(Control);
 LogicFlow.use(SelectionSelect);
+LogicFlow.use(MiniMap);
 
-// 加载完成时
+// 整体画布
 const containerRef = ref(); // 画布容器引用
+
+// 仿真按钮的状态
+const simulationActive = ref(false);
+
+
 
 // 菜单列表
 const dndData = [
@@ -66,6 +72,10 @@ const dndData = [
 
 // 加载成功
 onMounted(() => {
+  // 获取画布容器的宽度和高度
+  const containerWidth = containerRef.value.offsetWidth; // 画布容器的宽度
+  const containerHeight = containerRef.value.offsetHeight; // 画布容器的高度
+  
   // 找到容器
   const lf = new LogicFlow({
     container: containerRef.value,
@@ -75,6 +85,21 @@ onMounted(() => {
       enabled: true, // 开启快捷键
     }
   });
+  // 设置箭头
+  lf.setTheme({
+    // 设置箭头样式
+    arrow: {
+      offset: 0,
+      verticalLength: 0,
+    },
+  });
+  // 连线为曲线
+  lf.register({
+    type: 'bezier',
+    model: BezierEdgeModel,
+    view: BezierEdge
+  });
+  lf.setDefaultEdgeType('bezier');
 
   // 2.自定义节点
   lf.register(AndGate);
@@ -83,7 +108,41 @@ onMounted(() => {
 
   // 3.内部组件
   lf.extension.dndPanelVue.setPatternItems(dndData)
-  // lf.extension.miniMap.show(leftPosition?: number, topPosition?: number)
+  lf.extension.control.addItem({
+      key: 'simulation',
+      iconClass: simulationActive.value ? "fa fa-pause" : "fa fa-play", // 在html引入了font样式
+      text: "仿真",
+      onClick: (lf:any, ev:any) => {
+        // 切换状态
+        simulationActive.value = !simulationActive.value;
+        // 获取所有节点
+        const nodes = lf.graphModel.nodes;
+
+        // 遍历所有节点，并更新每个节点的status属性
+        nodes.forEach((node: { id: any; }) => {
+          lf.setProperties(node.id, {
+            status: simulationActive.value ? 'simulation' : 'normal',
+          });
+        });
+        // 重新渲染按钮以更新图标
+        // lf.extension.control.destroy('simulation');
+        // lf.extension.control.render(lf,document.getElementsByTagName('body')[0]);
+      },
+  })
+  lf.extension.control.addItem({
+      key:'guide',
+      iconClass: "fa fa-eye",
+      title: "导航",
+      text: "导航",
+      onClick: (lf:any, ev:any) => {
+        // 显示小地图在指定的位置
+        lf.extension.miniMap.show(containerWidth-170,containerHeight-320);
+      }
+    })
+  lf.extension.control.removeItem('reset')
+  lf.extension.control.removeItem('undo')
+  lf.extension.control.removeItem('redo')
+
   // 修改对齐线样式
   lf.setTheme({
     snapline: {
@@ -98,9 +157,11 @@ onMounted(() => {
     edges: [],
   });
 
+  // MiniMap.show()必须在lf.render()后调用。
+  lf.extension.miniMap.show(containerWidth-170,containerHeight-320)
   // 5.各节点数据
   const data = lf.getGraphData();
-  console.log(data)
+  // console.log(data)
 })
 
 </script>
