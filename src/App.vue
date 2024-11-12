@@ -75,7 +75,7 @@ onMounted(() => {
   // 获取画布容器的宽度和高度
   const containerWidth = containerRef.value.offsetWidth; // 画布容器的宽度
   const containerHeight = containerRef.value.offsetHeight; // 画布容器的高度
-  
+
   // 找到容器
   const lf = new LogicFlow({
     container: containerRef.value,
@@ -112,6 +112,7 @@ onMounted(() => {
       key: 'simulation',
       iconClass: simulationActive.value ? "fa fa-pause" : "fa fa-play", // 在html引入了font样式
       text: "仿真",
+      /* @ts-ignore */
       onClick: (lf:any, ev:any) => {
         // 切换状态
         simulationActive.value = !simulationActive.value;
@@ -134,11 +135,12 @@ onMounted(() => {
       iconClass: "fa fa-eye",
       title: "导航",
       text: "导航",
+      /* @ts-ignore */
       onClick: (lf:any, ev:any) => {
         // 显示小地图在指定的位置
         lf.extension.miniMap.show(containerWidth-170,containerHeight-320);
       }
-    })
+   })
   lf.extension.control.removeItem('reset')
   lf.extension.control.removeItem('undo')
   lf.extension.control.removeItem('redo')
@@ -160,7 +162,7 @@ onMounted(() => {
   // MiniMap.show()必须在lf.render()后调用。
   lf.extension.miniMap.show(containerWidth-170,containerHeight-320)
   // 5.各节点数据
-  const data = lf.getGraphData();
+  // const data = lf.getGraphData();
   // console.log(data)
 })
 
