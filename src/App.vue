@@ -127,6 +127,7 @@ const registerNodes = (lf: LogicFlow, nodes: any[]) => {
 const setPlugins = (lf: LogicFlow) => {
   // 设置拖拽插件dndPanelVue
   lf = setDndPanelVuePlugin(lf)
+
   // 设置控制面板插件Control
   lf = setControlPlugin(lf)
   return lf;
@@ -147,10 +148,11 @@ const setControlPlugin = (lf: LogicFlow) => {
     iconClass: simulationActive.value ? "fa fa-pause" : "fa fa-play", // 在html引入了font样式
     text: "仿真",
     /* @ts-ignore */
-    onClick: (lf: any, ev: any) => {
+    onClick: (lf: LogicFlow, ev: any) => {
       // 切换状态
       simulationActive.value = !simulationActive.value;
       // 获取所有节点
+      lf = lf.lf; // bug-#IB3T6D : https://gitee.com/lonelyzoom/online-logisim/issues/IB3T6D
       const nodes = lf.graphModel.nodes;
 
       // 遍历所有节点，并更新每个节点的status属性
