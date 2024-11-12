@@ -1,4 +1,5 @@
 // dnd-panel-vue.ts
+// 对于dnd-panel的改造使得其支持嵌套item展示
 import LogicFlow from "@logicflow/core";
 import ACollapse from "ant-design-vue/es/collapse";
 import ACollapsePanel from "ant-design-vue/es/collapse/CollapsePanel";
@@ -48,6 +49,7 @@ class DndPanelVue {
     this.panelEl = document.createElement("div");
     this.panelEl.className = "lf-dndpanel";
     this.groupList.forEach((groupItem, index) => {
+      // 创建一个折叠面板（Collapse）并将其添加到 DOM 中
       const collapse = this.createCollapse(index, groupItem);
       this.childrens.push(collapse);
     });
@@ -157,6 +159,7 @@ class DndPanelVue {
     ])
   }
 
+  // 使用ant-design的ACollapsePanel创建 collapse 元素
   private createCollapse(index: number, groupItem: GroupItem): VNode {
     const itemsLength = groupItem.items?.length || 0; // 确保 items 不是 undefined
     return h(ACollapsePanel, {

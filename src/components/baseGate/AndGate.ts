@@ -10,14 +10,14 @@ class AndGateView extends RectNode {
         const style = model.getNodeStyle();
     
         // 计算节点路径
-        const path1 = `M ${x} ${y} L ${x+width} ${y}  A ${width/2} ${width/2} 0 0 1 ${x + width} ${y + width} L ${x} ${y+width} Z`
+        const andGatepath = `M ${x} ${y} L ${x+width} ${y}  A ${width/2} ${width/2} 0 0 1 ${x + width} ${y + width} L ${x} ${y+width} Z`
         return h('g', {}, [
             // 与门线条
             h('path', {
                 ...style,
-                d: path1,
+                d: andGatepath,
             }),
-            // 三个实心圆点
+            // 三个实心连接圆点
             h('circle', {
                 cx: x + width*(3/2),
                 cy: y + width/2,
@@ -42,11 +42,11 @@ class AndGateView extends RectNode {
 
 // 节点数据
 class AndGateModel extends RectNodeModel {
-    // 节点形状
+    // 节点形状初始化数据
     initNodeData(data: any): void {
         super.initNodeData(data);
         this.width = 30;
-      }
+    }
   
     // 节点样式
     getNodeStyle() {
@@ -57,6 +57,7 @@ class AndGateModel extends RectNodeModel {
 
     // 外选框样式
     getOutlineStyle() {
+        // 当鼠标悬浮上去时取消显示外选框
         const style = super.getOutlineStyle()
         style.stroke = 'none'
         if (style.hover) {
