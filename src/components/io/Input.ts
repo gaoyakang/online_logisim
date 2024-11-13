@@ -104,7 +104,7 @@ class InputModel extends RectNodeModel {
       {
         x: x + width, // 锚点在矩形的最右侧
         y: y + height / 2,
-        id: "input_right_anchor",
+        id: "input_right_anchor_111",
         type: "right",
         direction: "right",
         // 设置锚点样式

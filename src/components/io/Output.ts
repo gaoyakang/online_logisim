@@ -16,9 +16,6 @@ class OutputView extends CircleNode {
       stroke: "none", // 圆环的边框颜色
       fill: "black", // 确保圆内部是空的
     };
-    // const currentMode =
-    //   properties.status === "simulation" ? simulationStyle : normalStyle;
-
     const clickedStyle = {
         stroke: "none", // 圆环的边框颜色
         fill: "green", // 确保圆内部是空的

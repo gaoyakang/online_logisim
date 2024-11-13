@@ -74,7 +74,7 @@ class AndGateModel extends RectNodeModel {
             {
                 x: x,
                 y: y + width / 4,
-                id: 'left-top',
+                id: 'andgate-left-top',
                 type: 'left-top',
                 direction: 'top',
                 style: { r: 5, fill: 'orange' }
@@ -83,7 +83,7 @@ class AndGateModel extends RectNodeModel {
             {
                 x: x,
                 y: y + width * 3 / 4,
-                id: 'left-bottom',
+                id: 'andgate-left-bottom',
                 type: 'left-bottom',
                 direction: 'bottom',
                 style: { r: 5, fill: 'orange' }
@@ -92,7 +92,7 @@ class AndGateModel extends RectNodeModel {
             {
                 x: x + width * (3/2),
                 y: y + width / 2,
-                id: 'right',
+                id: 'andgate-right',
                 type: 'right',
                 direction: 'right',
                 style: { r: 5, fill: 'orange' }

@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import LogicFlow from '@logicflow/core';
+import LogicFlow, { BaseNodeModel } from '@logicflow/core';
 import { BezierEdge, BezierEdgeModel } from '@logicflow/core';
 import { SelectionSelect,MiniMap } from '@logicflow/extension';
 import { DndPanelVue } from "./extension/dnd-panel-vue";
@@ -17,9 +17,10 @@ import Output from "./components/io/Output.ts";
 
 
 type activeNodes = {
-  [id: string]: { clicked: boolean };
+  // clicked是input节点要表明是否被点击了
+  // active是所有节点维护的代表当前节点导通，即输出为1
+  [id: string]: { clicked: boolean, type: string, active: boolean };
 }
-
 type activeEdge = {
   id: string
 }
@@ -210,15 +211,11 @@ const setControlPlugin = (lf: LogicFlow) => {
 // 监听边的创建事件
 const onEdgeConnected = (lf: LogicFlow) => {
   // TODO: 确定连接点之间是否允许连接
-  // lf.on("edge:add", (edge) => {
-  //   const { id, sourceNodeId, targetNodeId } = edge.data
-  //   console.log(id, sourceNodeId, targetNodeId )
-  //   lf.updateAttributes(id,{
-  //     style:{
-  //       stroke: 'green', // 设置边的颜色为绿色
-  //     }
-  //   })
-  // })
+  lf.on("edge:add", (edge) => {
+    const { id } = edge.data
+    // console.log(id, sourceNodeId, targetNodeId )
+    updateEdgeByid(lf,id)
+  })
   return lf;
 }
 
@@ -234,45 +231,75 @@ const renderLF = (lf: LogicFlow) => {
 }
 
 // 处理节点点击
+// 第一次点input节点，进入handleNodeClick
+// 遍历所有节点依次处理
+    // input节点：active在亮时true 暗时false
+    // output节点：根据前一节点的active状态决定自身active状态
+    // andGate节点: 根据前一节点的active状态决定自身active状态
+// 处理节点点击
 const handleNodeClick = (lf: LogicFlow, clickId: string) => {
-  // 创建一个临时对象来记录本次点击事件中已处理的节点ID
-  const processedNodes = new Set();
+  // TODO: 在处理节点前需要先理清节点处理顺序，因为后节点依赖于前节点的active
+  // 因为Output节点的结果依赖于前面节点的active状态，所以需要后处理它们
+  // 收集所有节点的类型和 ID
+  const nodesToProcess = lf.graphModel.nodes.map(node => ({ id: node.id, type: node.type }));
 
-   lf.graphModel.nodes.forEach((node) => {
-      // 检查节点ID是否与被点击的节点ID相同
-      if (node.id === clickId && !processedNodes.has(clickId)) {
-        // 标记该节点已经被处理
-        processedNodes.add(clickId);
-        // 分类型处理
-        const type = node.type
-        switch (type) {
-          case 'Input':
-            handleInputNode(lf,clickId);
-            break;
-          case 'Output':
-            handleOutputNode(lf);
-            break;
-          case 'AndGate':
-            handleAndGateNode(lf);
-            break;
-          default:
-            console.log('未处理的节点类型');
-        }
-      }
-   })
-}
+  // 处理 Input 类型的节点
+  nodesToProcess.forEach(node => {
+    if (node.type === 'Input') {
+      handleNodeBasedOnType(lf, node, clickId);
+    }
+  });
+
+  // 处理非 Output 类型的节点
+  nodesToProcess.forEach(node => {
+    if (node.type !== 'Output' && node.type !== 'Input') {
+      handleNodeBasedOnType(lf, node, clickId);
+    }
+  });
+
+  // 处理 Output 类型的节点
+  nodesToProcess.forEach(node => {
+    if (node.type === 'Output') {
+      handleNodeBasedOnType(lf, node, '');
+    }
+  });
+};
+
+// 根据节点类型处理节点
+const handleNodeBasedOnType = (lf: LogicFlow, node: any, clickId:string) => {
+  switch (node.type) {
+    case 'Input':
+      handleInputNode(lf, node.id, clickId);
+      break;
+    case 'Output':
+      handleOutputNode(lf, node.id);
+      break;
+    case 'AndGate':
+      handleAndGateNode(lf, node);
+      break;
+    default:
+      console.log('未处理的节点类型');
+  }
+};
 
 // 处理input类型节点
-const handleInputNode = (lf: LogicFlow, clickId: string) => {
-  // 获取当前节点的状态，如果节点不存在，则默认 clicked 为 false
-  const currentNode = activeNodesAndEdgesIds.value.activeNodes[clickId] || { clicked: false };
-  const clicked = !currentNode.clicked;
+const handleInputNode = (lf: LogicFlow, nodeId: string, clickId: string) => {
+  // 创建一个临时对象来记录本次点击事件中已处理的节点ID
+  const processedNodes = new Set();
+  // 检查节点ID是否与被点击的节点ID相同
+  if (nodeId === clickId && !processedNodes.has(clickId)) {
+        // 标记该节点已经被处理
+        processedNodes.add(clickId);
+        // 获取当前节点的状态，如果节点不存在，则默认 clicked 为 false
+        const currentNode = activeNodesAndEdgesIds.value.activeNodes[clickId] || { clicked: false, type:'Input', active: false };
+        const clicked = !currentNode.clicked;
 
-  // 更新 LogicFlow 中的节点属性
-  updateNodeById(lf,clickId,clicked)
-  
-  // 更新节点状态
-  activeNodesAndEdgesIds.value.activeNodes[clickId] = { clicked };
+        // 更新 LogicFlow 中的节点属性
+        updateNodeById(lf,clickId,clicked)
+        
+        // 更新节点状态
+        activeNodesAndEdgesIds.value.activeNodes[clickId] = { clicked, type:'Input', active:clicked };
+  }
 };
 
 // 更新 LogicFlow 中的节点属性
@@ -283,14 +310,81 @@ const updateNodeById = (lf:LogicFlow, clickId: string, status: boolean) => {
 }
 
 // 处理Output类型节点
-const handleOutputNode = (lf: LogicFlow) => {
-  // console.log('handleOutputNode')
-}
+const handleOutputNode = (lf: LogicFlow, nodeId: string) => {
+  // 1.获得output节点的id
+  // 2.获得output节点的前一个节点的id
+  // 3.获得前一节点的active状态
+  // 如果前一节点的active状态为true则需要点亮该output节点，否则不做处理
+
+  // 遍历所有边，找到与当前Output节点相连的边
+  lf.graphModel.edges.forEach(edge => {
+    if (edge.targetNodeId === nodeId) {
+          // 获得前一节点的active状态
+          const previousNodeActiveState = activeNodesAndEdgesIds.value.activeNodes[edge.sourceNodeId];
+          // console.log(activeNodesAndEdgesIds.value.activeNodes)
+          // 如果前一节点的active状态为true则需要点亮该output节点，否则不做处理
+          if (previousNodeActiveState && previousNodeActiveState.active) {
+            // 将自身节点存到activeNodesAndEdgesIds
+            activeNodesAndEdgesIds.value.activeNodes[nodeId] = { clicked:false, type:'Output', active:true };
+            lf.setProperties(nodeId, {
+              clicked: true
+            });
+          } else {
+            // 将自身节点存到activeNodesAndEdgesIds
+            activeNodesAndEdgesIds.value.activeNodes[nodeId] = { clicked:false, type:'Output', active:false };
+            lf.setProperties(nodeId, {
+              clicked: false
+            });
+          }
+        }
+  })
+};
 
 // 处理AndGate类型节点
-const handleAndGateNode = (lf: LogicFlow) => {
-  // console.log('handleAndGateNode')
-}
+const handleAndGateNode = (lf: LogicFlow, node: BaseNodeModel) => {
+  // 获取当前节点的所有锚点
+  const anchors = lf.getNodeModelById(node.id).getDefaultAnchor();
+  
+  // 定义锚点 ID
+  const topAnchorId = anchors[0].id; // 假设第一个锚点是顶部锚点
+  const bottomAnchorId = anchors[1].id; // 假设第二个锚点是底部锚点
+
+  // 初始化变量来存储前一个节点的 active 状态
+  let firstAnchorActive = false;
+  let secondAnchorActive = false;
+
+  // 遍历所有边，找到与当前节点锚点相连的边
+  lf.graphModel.edges.forEach(edge => {
+    if (edge.targetAnchorId === topAnchorId) {
+      // 根据边的 sourceNodeId 找到前一个节点的 active 状态
+      const sourceNodeId = edge.sourceNodeId;
+      const sourceNodeActiveState = activeNodesAndEdgesIds.value.activeNodes[sourceNodeId];
+      if (sourceNodeActiveState) { // 检查 sourceNodeActiveState 是否存在
+        firstAnchorActive = sourceNodeActiveState.active;
+      }
+    } else if (edge.targetAnchorId === bottomAnchorId) {
+      // 根据边的 sourceNodeId 找到前一个节点的 active 状态
+      const sourceNodeId = edge.sourceNodeId;
+      const sourceNodeActiveState = activeNodesAndEdgesIds.value.activeNodes[sourceNodeId];
+      if (sourceNodeActiveState) { // 检查 sourceNodeActiveState 是否存在
+        secondAnchorActive = sourceNodeActiveState.active;
+      }
+    }
+  });
+
+  // 判断两个输入节点的 active 状态
+  const andGateActive = firstAnchorActive && secondAnchorActive;
+  // 更新当前节点的 active 状态
+  activeNodesAndEdgesIds.value.activeNodes[node.id] = {
+    clicked: false,
+    type: 'AndGate',
+    active: andGateActive
+  };
+  // 更新 LogicFlow 中的节点属性
+  lf.setProperties(node.id, {
+    clicked: andGateActive
+  });
+};
 
 // 点亮线
 const updateEdgeByid = (lf: LogicFlow,edgeId:string) => {
@@ -310,6 +404,7 @@ const onNodeClick = (lf: LogicFlow) => {
     if(properties.status === 'simulation'){
       // 被点击的节点是否是输入节点
       if(type === "Input"){
+        debugger
         handleNodeClick(lf,id);
       }
     }
