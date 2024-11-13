@@ -15,10 +15,29 @@ import AndGate from "./components/baseGate/AndGate.ts";
 import Input from "./components/io/Input.ts";
 import Output from "./components/io/Output.ts";
 
+
+type activeNodes = {
+  [id: string]: { clicked: boolean };
+}
+
+type activeEdge = {
+  id: string
+}
+type activeNodesAndEdgesIds = {
+  activeNodes:activeNodes
+  activeEdge:activeEdge
+}
+
 const containerRef = ref(); // 画布容器引用
 const simulationActive = ref(false); // 仿真按钮的状态
 const inputActive = ref(false); // 输入是否被点击
 const edgeStatus = ref(0); // 连线的状态
+
+const activeNodesAndEdgesIds = ref<activeNodesAndEdgesIds>({
+  activeNodes: {},
+  activeEdge: { id: '' },
+});//需要点亮的节点和边的id合集
+
 const dndData = ref([
   {
     group: "基本逻辑门",
@@ -214,35 +233,84 @@ const renderLF = (lf: LogicFlow) => {
   lf.extension.miniMap.show(containerRef.value.offsetWidth - 170, containerRef.value.offsetHeight - 320)
 }
 
+// 处理节点点击
+const handleNodeClick = (lf: LogicFlow, clickId: string) => {
+  // 创建一个临时对象来记录本次点击事件中已处理的节点ID
+  const processedNodes = new Set();
+
+   lf.graphModel.nodes.forEach((node) => {
+      // 检查节点ID是否与被点击的节点ID相同
+      if (node.id === clickId && !processedNodes.has(clickId)) {
+        // 标记该节点已经被处理
+        processedNodes.add(clickId);
+        // 分类型处理
+        const type = node.type
+        switch (type) {
+          case 'Input':
+            handleInputNode(lf,clickId);
+            break;
+          case 'Output':
+            handleOutputNode(lf);
+            break;
+          case 'AndGate':
+            handleAndGateNode(lf);
+            break;
+          default:
+            console.log('未处理的节点类型');
+        }
+      }
+   })
+}
+
+// 处理input类型节点
+const handleInputNode = (lf: LogicFlow, clickId: string) => {
+  // 获取当前节点的状态，如果节点不存在，则默认 clicked 为 false
+  const currentNode = activeNodesAndEdgesIds.value.activeNodes[clickId] || { clicked: false };
+  const clicked = !currentNode.clicked;
+
+  // 更新 LogicFlow 中的节点属性
+  updateNodeById(lf,clickId,clicked)
+  
+  // 更新节点状态
+  activeNodesAndEdgesIds.value.activeNodes[clickId] = { clicked };
+};
+
+// 更新 LogicFlow 中的节点属性
+const updateNodeById = (lf:LogicFlow, clickId: string, status: boolean) => {
+  lf.setProperties(clickId, {
+    clicked: status
+  });
+}
+
+// 处理Output类型节点
+const handleOutputNode = (lf: LogicFlow) => {
+  // console.log('handleOutputNode')
+}
+
+// 处理AndGate类型节点
+const handleAndGateNode = (lf: LogicFlow) => {
+  // console.log('handleAndGateNode')
+}
+
+// 点亮线
+const updateEdgeByid = (lf: LogicFlow,edgeId:string) => {
+  lf.updateAttributes(edgeId,{
+          style:{
+            stroke: 'green'
+          }
+  })
+  return lf;
+}
+
 // 监听节点点击
 const onNodeClick = (lf: LogicFlow) => {
   lf.on('node:click', (node) => {
-    const { type, properties } = node.data;
+    const { id, type, properties } = node.data;
+    // 是否是仿真状态下点击
     if(properties.status === 'simulation'){
+      // 被点击的节点是否是输入节点
       if(type === "Input"){
-        const edgeId = lf.graphModel.edges[0].id
-        const sourceNodeId = lf.graphModel.edges[0].sourceNodeId
-        const targetNodeId = lf.graphModel.edges[0].targetNodeId
-        if(edgeStatus.value === 1){
-          edgeStatus.value = 0;
-        }else{
-          edgeStatus.value = 1;
-        }
-
-        // 设置边的颜色为绿色
-        lf.updateAttributes(edgeId,{
-          style:{
-            stroke: (edgeStatus.value === 1) ? 'green' : 'black'
-          }
-        })
-        // 设置2节点的颜色为绿色
-        lf.setProperties(sourceNodeId, {
-          clicked: !inputActive.value
-        });
-        lf.setProperties(targetNodeId, {
-          clicked: !inputActive.value
-        });
-        inputActive.value = !inputActive.value
+        handleNodeClick(lf,id);
       }
     }
   })
