@@ -31,8 +31,6 @@ type activeNodesAndEdgesIds = {
 
 const containerRef = ref(); // 画布容器引用
 const simulationActive = ref(false); // 仿真按钮的状态
-const inputActive = ref(false); // 输入是否被点击
-const edgeStatus = ref(0); // 连线的状态
 
 const activeNodesAndEdgesIds = ref<activeNodesAndEdgesIds>({
   activeNodes: {},
