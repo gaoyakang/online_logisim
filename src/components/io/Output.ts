@@ -10,7 +10,7 @@ class OutputView extends CircleNode {
     // 不同模式下的样式
     const normalStyle = {
       stroke: "black", // 圆环的边框颜色
-      fill: "none", // 确保圆内部是空的
+      fill: "white", // 确保圆内部是空的
     };
     const simulationStyle = {
       stroke: "none", // 圆环的边框颜色
@@ -41,7 +41,7 @@ class OutputView extends CircleNode {
         cy: y, // 圆心的y坐标
         r: radius, // 圆的半径
         stroke: "black", // 圆环的边框颜色
-        fill: "none", // 确保圆内部是空的
+        fill: "white", // 确保圆内部是空的
         "stroke-width": 2, // 圆环的宽度
       }),
       // 节点内圆

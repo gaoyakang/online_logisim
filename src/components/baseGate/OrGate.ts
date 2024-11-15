@@ -10,7 +10,6 @@ class OrGateView extends RectNode {
         const style = model.getNodeStyle();
     
         // 计算节点路径
-        // TODO: 画个或门
         const orGatePath = `
                             M ${x} ${y} 
                             L ${x+(width/2)} ${y}

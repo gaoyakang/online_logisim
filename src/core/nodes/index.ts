@@ -5,6 +5,7 @@ import { handleInputNode } from "./handleInputNode";
 import { handleOutputNode } from "./handleOutputNode";
 import { handleAndGateNode } from "./handleAndGateNode";
 import { handleOrGateNode } from "./handleOrGateNode";
+import { handleNotGateNode } from "./handleNotGateNode";
 
 // 需要点亮的节点和边的id合集类型
 export type ActiveNodes = {
@@ -30,13 +31,16 @@ const handleNodeBasedOnType = (lf: LogicFlow, node: any, clickId:string) => {
     case 'OrGate':
         activeNodes = handleOrGateNode(lf, node, activeNodes);
       break;
+    case 'NotGate':
+        activeNodes = handleNotGateNode(lf, node, activeNodes, clickId);
+      break;
     default:
       console.log('未处理的节点类型');
   }
 };
 
 // 处理节点点击
-const handleNodeClick = (lf: LogicFlow, clickId: string) => {
+export const handleNodeClick = (lf: LogicFlow, clickId: string) => {
 
   // 对树结构进行节点排序
   const { sortedKey, sortedNodesData } = sortNodes(lf)
@@ -66,7 +70,5 @@ const onNodeClick = (lf: LogicFlow) => {
   })
   return lf;
 }
-
-
 
 export { onNodeClick }

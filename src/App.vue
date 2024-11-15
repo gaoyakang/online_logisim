@@ -8,8 +8,10 @@
 import { onMounted, ref } from "vue";
 import AndGate from "./components/baseGate/AndGate.ts";
 import OrGate from "./components/baseGate/OrGate.ts";
+import NotGate from "./components/baseGate/NotGate.ts"
 import Input from "./components/io/Input.ts";
 import Output from "./components/io/Output.ts";
+
 import { lfInit } from './core/LFInstance/LFInit.ts'
 import { registerNodes } from './core/nodes/registerNodes.ts'
 import { setPlugins } from './core/plugins/setPlugins.ts'
@@ -24,7 +26,7 @@ onMounted(() => {
   let lf = lfInit(containerRef)
 
   // 2.注册节点
-  lf = registerNodes(lf, [AndGate, Input, Output, OrGate])
+  lf = registerNodes(lf, [AndGate, Input, Output, OrGate, NotGate])
 
   // 3.设置插件
   lf = setPlugins(lf, containerRef);
