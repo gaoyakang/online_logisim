@@ -6,6 +6,7 @@ import { handleOutputNode } from "./handleOutputNode";
 import { handleAndGateNode } from "./handleAndGateNode";
 import { handleOrGateNode } from "./handleOrGateNode";
 import { handleNotGateNode } from "./handleNotGateNode";
+import { handleXorGateNode } from "./handleXorGateNode";
 
 // 需要点亮的节点和边的id合集类型
 export type ActiveNodes = {
@@ -13,7 +14,7 @@ export type ActiveNodes = {
   // active是所有节点维护的代表当前节点导通，即输出为1
   [id: string]: { clicked: boolean, type: string, active: boolean };
 }
-let activeNodes = ref<ActiveNodes>({});//需要点亮的节点和边的id合集
+export let activeNodes = ref<ActiveNodes>({});//需要点亮的节点和边的id合集
 
 
 // 根据节点类型处理节点
@@ -33,6 +34,9 @@ const handleNodeBasedOnType = (lf: LogicFlow, node: any, clickId:string) => {
       break;
     case 'NotGate':
         activeNodes = handleNotGateNode(lf, node, activeNodes, clickId);
+      break;
+    case 'XorGate':
+        activeNodes = handleXorGateNode(lf, node, activeNodes);
       break;
     default:
       console.log('未处理的节点类型');
