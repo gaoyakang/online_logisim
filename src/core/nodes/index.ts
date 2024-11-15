@@ -7,6 +7,7 @@ import { handleAndGateNode } from "./handleAndGateNode";
 import { handleOrGateNode } from "./handleOrGateNode";
 import { handleNotGateNode } from "./handleNotGateNode";
 import { handleXorGateNode } from "./handleXorGateNode";
+import { handleClockNode } from "./handleClockNode";
 
 // 需要点亮的节点和边的id合集类型
 export type ActiveNodes = {
@@ -38,6 +39,9 @@ const handleNodeBasedOnType = (lf: LogicFlow, node: any, clickId:string) => {
     case 'XorGate':
         activeNodes = handleXorGateNode(lf, node, activeNodes);
       break;
+    case 'Clock':
+        activeNodes = handleClockNode(lf, node,activeNodes);
+      break;
     default:
       console.log('未处理的节点类型');
   }
@@ -49,6 +53,24 @@ export const handleNodeClick = (lf: LogicFlow, clickId: string) => {
   // 对树结构进行节点排序
   const { sortedKey, sortedNodesData } = sortNodes(lf)
 
+  // debugger
+  // 先找到clock节点进行处理
+  sortedNodesData[Number(sortedKey[0])].forEach(nodeId => {
+    const node = lf.graphModel.getNodeModelById(nodeId);
+    if(node.type === 'Clock'){
+      // 处理clock节点
+      handleNodeBasedOnType(lf,node,'')
+      // 将该clock节点从sortedNodesData删除
+      const ids = sortedNodesData[Number(sortedKey[0])];
+      for(let i=0;i<ids.length;i++){
+        if(ids[i] === nodeId){
+          delete ids[i]
+        }
+      }
+    }
+  })
+
+  // 处理其他非clock节点
   // 按照sortedKey顺序取出sortedNodesData内的节点依次处理
   sortedKey.forEach(item => {
     sortedNodesData[Number(item)].forEach(nodeId => {

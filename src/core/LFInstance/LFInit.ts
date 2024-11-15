@@ -1,5 +1,4 @@
 import LogicFlow from "@logicflow/core";
-import { BezierEdge, BezierEdgeModel } from '@logicflow/core';
 import { DndPanelVue } from '../../extension/dnd-panel-vue';
 import { Control } from '../../extension/control-vue';
 import { SelectionSelect,MiniMap } from '@logicflow/extension';
@@ -26,12 +25,7 @@ const lfInit = (containerRef: Ref<any, any>) => {
       },
     });
   
-    // 连线为曲线
-    lf.register({
-      type: 'bezier',
-      model: BezierEdgeModel,
-      view: BezierEdge
-    });
+    // 设置默认连线为曲线
     lf.setDefaultEdgeType('bezier');
   
     // 修改对齐辅助线样式

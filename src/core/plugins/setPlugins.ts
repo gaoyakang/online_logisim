@@ -17,7 +17,8 @@ const dndData = ref([
       group: "输入输出",
       items: [
         { id: '1', type: 'Input', label: '输入', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDM2IDM2IiBmaWxsPSJub25lIj4KPHJlY3QgeD0iNS41IiB5PSI2LjUiIHdpZHRoPSIyNSIgaGVpZ2h0PSIyNCIgZmlsbD0iI0ZERkFGQSIgc3Ryb2tlPSJibGFjayIvPgo8Y2lyY2xlIGN4PSIxOCIgY3k9IjE4IiByPSI5LjUiIGZpbGw9IndoaXRlIiBzdHJva2U9ImJsYWNrIi8+Cjwvc3ZnPg==' },
-        { id: '2', type: 'Output', label: '输出', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDM2IDM2IiBmaWxsPSJub25lIj4KPGNpcmNsZSBjeD0iMTgiIGN5PSIxOCIgcj0iMTMuNSIgZmlsbD0id2hpdGUiIHN0cm9rZT0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTgiIGN5PSIxOCIgcj0iOS41IiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJibGFjayIvPgo8L3N2Zz4=', }
+        { id: '2', type: 'Output', label: '输出', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDM2IDM2IiBmaWxsPSJub25lIj4KPGNpcmNsZSBjeD0iMTgiIGN5PSIxOCIgcj0iMTMuNSIgZmlsbD0id2hpdGUiIHN0cm9rZT0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTgiIGN5PSIxOCIgcj0iOS41IiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJibGFjayIvPgo8L3N2Zz4=', },
+        { id: '3', type: 'Clock', label: '时钟', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDM2IDM2IiBmaWxsPSJub25lIj4KPHJlY3QgeD0iNiIgeT0iNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjIzIiBmaWxsPSIjRkRGQUZBIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjciIHkxPSIyMS41IiB4Mj0iMTAiIHkyPSIyMS41IiBzdHJva2U9ImJsYWNrIi8+CjxsaW5lIHgxPSI5LjUiIHkxPSIyMiIgeDI9IjkuNSIgeTI9IjEwIiBzdHJva2U9ImJsYWNrIi8+CjxsaW5lIHgxPSIxNi41IiB5MT0iMjIiIHgyPSIxNi41IiB5Mj0iMTAiIHN0cm9rZT0iYmxhY2siLz4KPGxpbmUgeDE9IjIzLjUiIHkxPSIyMiIgeDI9IjIzLjUiIHkyPSIxMCIgc3Ryb2tlPSJibGFjayIvPgo8bGluZSB4MT0iOSIgeTE9IjkuNSIgeDI9IjE3IiB5Mj0iOS41IiBzdHJva2U9ImJsYWNrIi8+CjxsaW5lIHgxPSIyMyIgeTE9IjkuNSIgeDI9IjMxIiB5Mj0iOS41IiBzdHJva2U9ImJsYWNrIi8+CjxsaW5lIHgxPSIxNiIgeTE9IjIxLjUiIHgyPSIyNCIgeTI9IjIxLjUiIHN0cm9rZT0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMzEiIGN5PSIxNSIgcj0iMSIgZmlsbD0iI0ZBQTUwMCIvPgo8L3N2Zz4=', }
       ]
     },
     {
@@ -75,7 +76,9 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
 
       // 切换状态
       simulationActive.value = !simulationActive.value;
-      // 开始仿真就需要处理一遍节点，因为有可能有非门，当输入为0时非门就应该有1的状态
+      // 开始仿真就需要处理一遍节点，
+      // 因为有可能有非门，当输入为0时非门就应该有1的状态
+      // 同时又可能有时钟，需要每隔固定时间遍历一遍节点
       if(simulationActive.value){
         handleNodeClick(that,'')
       }else{
