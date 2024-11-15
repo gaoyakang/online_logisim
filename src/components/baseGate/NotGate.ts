@@ -7,7 +7,7 @@ class NotGateView extends RectNode {
         const { model } = this.props;
         const { x, y, width } = model;
         // 获取样式属性
-        const style = model.getNodeStyle();
+        // const style = model.getNodeStyle();
     
         // 计算等边三角形的高，高 = (sqrt(3) / 2) * 边长
         const height = (width * Math.sqrt(3)) / 2;
