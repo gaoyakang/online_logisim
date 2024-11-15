@@ -4,6 +4,7 @@ import { sortNodes } from "./sortNodes";
 import { handleInputNode } from "./handleInputNode";
 import { handleOutputNode } from "./handleOutputNode";
 import { handleAndGateNode } from "./handleAndGateNode";
+import { handleOrGateNode } from "./handleOrGateNode";
 
 // 需要点亮的节点和边的id合集类型
 export type ActiveNodes = {
@@ -25,6 +26,9 @@ const handleNodeBasedOnType = (lf: LogicFlow, node: any, clickId:string) => {
       break;
     case 'AndGate':
       activeNodes = handleAndGateNode(lf, node, activeNodes);
+      break;
+    case 'OrGate':
+        activeNodes = handleOrGateNode(lf, node, activeNodes);
       break;
     default:
       console.log('未处理的节点类型');
