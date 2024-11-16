@@ -86,7 +86,7 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
       // 因为有可能有非门，当输入为0时非门就应该有1的状态
       // 同时又可能有时钟，需要每隔固定时间遍历一遍节点
       if(simulationActive.value){
-        handleNodeClick(that,'')
+        handleNodeClick(that,'',true)
       }else{
         // TODO: 重置activeNodes
       }

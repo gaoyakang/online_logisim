@@ -10,10 +10,11 @@ import { handleXorGateNode } from "./handleXorGateNode";
 import { handleClockNode } from "./handleClockNode";
 
 // 需要点亮的节点和边的id合集类型
+type Timeout = /*unresolved*/ any
 export type ActiveNodes = {
   // clicked是input节点要表明是否被点击了
   // active是所有节点维护的代表当前节点导通，即输出为1
-  [id: string]: { clicked: boolean, type: string, active: boolean };
+  [id: string]: { clicked: boolean, type: string, active: boolean, timer?:Timeout };
 }
 export let activeNodes = ref<ActiveNodes>({});//需要点亮的节点和边的id合集
 
@@ -48,36 +49,33 @@ const handleNodeBasedOnType = (lf: LogicFlow, node: any, clickId:string) => {
 };
 
 // 处理节点点击
-export const handleNodeClick = (lf: LogicFlow, clickId: string) => {
+export const handleNodeClick = (lf: LogicFlow, clickId: string, isInitialProcessing:boolean = false) => {
 
   // 对树结构进行节点排序
   const { sortedKey, sortedNodesData } = sortNodes(lf)
 
-  // debugger
-  // 先找到clock节点进行处理
-  sortedNodesData[Number(sortedKey[0])].forEach(nodeId => {
-    const node = lf.graphModel.getNodeModelById(nodeId);
-    if(node.type === 'Clock'){
-      // 处理clock节点
-      handleNodeBasedOnType(lf,node,'')
-      // 将该clock节点从sortedNodesData删除
-      const ids = sortedNodesData[Number(sortedKey[0])];
-      for(let i=0;i<ids.length;i++){
-        if(ids[i] === nodeId){
-          delete ids[i]
-        }
+  // issue#1 : https://github.com/gaoyakang/online_logisim/issues/1
+  // 如果是初次处理，先处理clock节点
+  if (isInitialProcessing) {
+    sortedNodesData[Number(sortedKey[0])].forEach(nodeId => {
+      const node = lf.graphModel.getNodeModelById(nodeId);
+      if (node.type === 'Clock') {
+        // 处理clock节点
+        handleNodeBasedOnType(lf, node, clickId);
       }
-    }
-  })
+    });
+  }
 
-  // 处理其他非clock节点
-  // 按照sortedKey顺序取出sortedNodesData内的节点依次处理
+  // 处理其他节点
   sortedKey.forEach(item => {
     sortedNodesData[Number(item)].forEach(nodeId => {
-      const xnode = lf.getNodeModelById(nodeId)
-      handleNodeBasedOnType(lf,xnode,clickId)
-    })
+      const node = lf.graphModel.getNodeModelById(nodeId);
+      if (node.type !== 'Clock' || isInitialProcessing) {
+        handleNodeBasedOnType(lf, node, clickId);
+      }
+    });
   });
+
   return lf;
 };
 
