@@ -111,6 +111,20 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
       lf.extension.miniMap.show(containerRef.value.offsetWidth - 170, containerRef.value.offsetHeight - 320);
       }
   })
+  // 添加源码按钮
+  lf.extension.control.addItem({
+    key: 'sourcecode',
+    iconClass: "fa fa-code-branch",
+    title: "源码",
+    text: "源码",
+    /* @ts-ignore */
+    onClick: (lf: any, ev: any) => {
+      // 跳转到源码地址
+      const sourceCodeUrl = 'https://github.com/gaoyakang/online_logisim';
+      // 使用 window.open 打开新标签页跳转到源码地址
+      window.open(sourceCodeUrl, '_blank');
+    }
+})
   // 移除适应/上一步/下一步按钮
   lf.extension.control.removeItem('reset')
   lf.extension.control.removeItem('undo')

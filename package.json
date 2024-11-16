@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "analyze": "vite build --mode analyze"
   },
   "dependencies": {
     "@logicflow/core": "1.1.31",
@@ -19,6 +20,7 @@
     "@vitejs/plugin-vue": "^5.1.4",
     "typescript": "~5.6.2",
     "vite": "^5.4.10",
+    "vite-bundle-analyzer": "^0.13.1",
     "vue-tsc": "^2.1.8"
   }
 }
