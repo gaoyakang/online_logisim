@@ -1,14 +1,14 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
 import { Ref } from "vue";
-import { restoreFromLocalStorage } from "../nodes/storageNodes";
+// import { restoreFromLocalStorage } from "../nodes/storageNodes";
 
 
 const renderLF = (lf: LogicFlow,containerRef: Ref<any, any>) => {
-  const {nodes, edges} = restoreFromLocalStorage();
+  // const {nodes, edges} = restoreFromLocalStorage();
 
     lf.render({
-      nodes,
-      edges,
+      nodes:[],
+      edges:[],
     });
   
     // MiniMap.show()必须在lf.render()后调用。
