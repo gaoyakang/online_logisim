@@ -1,4 +1,4 @@
-import LogicFlow from "@logicflow/core";
+import LogicFlow from "@logicflow/core/types/LogicFlow";
 import { ActiveNodes, handleNodeClick } from "./index.ts";
 import { Ref } from 'vue'
 

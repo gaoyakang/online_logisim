@@ -1,4 +1,5 @@
-import LogicFlow, { BaseNodeModel } from "@logicflow/core";
+import LogicFlow from "@logicflow/core/types/LogicFlow";
+import { BaseNodeModel } from "@logicflow/core/types/model/node";
 import { updateNodeById } from "./updateNodeById";
 import { ActiveNodes } from ".";
 import { Ref } from "vue";

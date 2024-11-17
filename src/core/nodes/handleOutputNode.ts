@@ -1,7 +1,7 @@
-import LogicFlow from "@logicflow/core";
 import { Ref } from "vue";
 import { ActiveNodes } from ".";
 import { updateNodeById } from "./updateNodeById";
+import LogicFlow from "@logicflow/core/types/LogicFlow";
 
 
 // 处理Output类型节点

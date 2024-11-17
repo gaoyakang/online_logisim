@@ -1,4 +1,4 @@
-import LogicFlow from "@logicflow/core";
+import LogicFlow from "@logicflow/core/types/LogicFlow";
 
 // 监听边的创建事件
 const onEdgeConnected = (lf: LogicFlow) => {

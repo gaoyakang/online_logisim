@@ -1,6 +1,6 @@
 // dnd-panel-vue.ts
 // 对于dnd-panel的改造使得其支持嵌套item展示
-import LogicFlow from "@logicflow/core";
+import LogicFlow from "@logicflow/core/types/LogicFlow";
 import ACollapse from "ant-design-vue/es/collapse";
 import ACollapsePanel from "ant-design-vue/es/collapse/CollapsePanel";
 import { VNode, createApp, h } from "vue";

@@ -1,5 +1,4 @@
-import LogicFlow from "@logicflow/core";
-import { ref } from "vue";
+import { Ref, ref } from "vue";
 import { sortNodes } from "./sortNodes";
 import { handleInputNode } from "./handleInputNode";
 import { handleOutputNode } from "./handleOutputNode";
@@ -8,6 +7,7 @@ import { handleOrGateNode } from "./handleOrGateNode";
 import { handleNotGateNode } from "./handleNotGateNode";
 import { handleXorGateNode } from "./handleXorGateNode";
 import { handleClockNode } from "./handleClockNode";
+import LogicFlow from "@logicflow/core/types/LogicFlow";
 
 // 需要点亮的节点和边的id合集类型
 type Timeout = /*unresolved*/ any
@@ -24,8 +24,7 @@ export type ActiveNodes = {
     processedInCurrentRound?: boolean,
   };
 }
-export let activeNodes = ref<ActiveNodes>({});//需要点亮的节点和边的id合集
-
+export let activeNodes: Ref<ActiveNodes> = ref<ActiveNodes>({})
 
 // 根据节点类型处理节点
 const handleNodeBasedOnType = (lf: LogicFlow, node: any, clickId:string) => {

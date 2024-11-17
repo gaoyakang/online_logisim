@@ -28,7 +28,7 @@ onMounted(() => {
   let lf = lfInit(containerRef)
 
   // 2.注册节点
-  lf = registerNodes(lf, [AndGate, Input, Output, OrGate, NotGate, XorGate, Clock])
+  lf = registerNodes(lf, [ Input, Output, Clock, AndGate, OrGate, NotGate, XorGate, ])
 
   // 3.设置插件
   lf = setPlugins(lf, containerRef);

@@ -1,6 +1,6 @@
-import LogicFlow from "@logicflow/core";
 import { Ref, ref } from 'vue'
-import { handleNodeClick } from "../nodes";
+import { activeNodes, handleNodeClick } from "../nodes";
+import LogicFlow from '@logicflow/core/types/LogicFlow';
 
 // dnd菜单列表
 const dndData = ref([
@@ -117,6 +117,24 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
       lf.extension.miniMap.show(containerRef.value.offsetWidth - 170, containerRef.value.offsetHeight - 320);
       }
   })
+  // 清空画布按钮
+  lf.extension.control.addItem({
+      key: 'clearpage',
+      iconClass: "fa fa-eraser",
+      title: "清空",
+      text: "清空",
+      /* @ts-ignore */
+      onClick: (lf: any, ev: any) => {
+        activeNodes.value = {};
+
+        // 重新渲染逻辑流图
+        that.clearData();
+
+        // 重置仿真状态
+        simulationActive.value = false;
+      }
+  })
+
   // 添加源码按钮
   lf.extension.control.addItem({
     key: 'sourcecode',
@@ -130,7 +148,7 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
       // 使用 window.open 打开新标签页跳转到源码地址
       window.open(sourceCodeUrl, '_blank');
     }
-})
+  })
   // 移除适应/上一步/下一步按钮
   lf.extension.control.removeItem('reset')
   lf.extension.control.removeItem('undo')

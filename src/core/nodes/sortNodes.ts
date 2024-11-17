@@ -1,12 +1,14 @@
-import LogicFlow from "@logicflow/core";
+import LogicFlow from "@logicflow/core/types/LogicFlow";
 
 // 节点彼此连接关系的树结构类型
-interface TreeNode {
-    id: string;
-    type: string;
-    sort: number,
+export interface TreeNode {
+    id: string
+    type: string
+    sort: number
+    x: number
+    y: number
     children: TreeNode[];
-  }
+}
   
 // 对树结构排序的类型
 type SortMap = {
@@ -14,7 +16,8 @@ type SortMap = {
 };
 
 // 创建树结构
-function buildTree(lf: LogicFlow) {
+export function buildTree(lf: LogicFlow) {
+    
     // 获取所有节点和边的信息
     const { nodes, edges } = lf.graphModel;
   
@@ -22,7 +25,7 @@ function buildTree(lf: LogicFlow) {
     const buildSubTree = (nodeId: string, level: number): TreeNode => {
       const node = nodes.find(n => n.id === nodeId);
       if (!node) {
-        return { id: nodeId, type: 'Output', children: [], sort: level };
+        return { id: nodeId, type: 'Output', children: [], sort: level, x: 0, y: 0 };
       }
   
       const children = edges
@@ -31,7 +34,7 @@ function buildTree(lf: LogicFlow) {
         .flat(); // 将子数组平铺为一个数组
   
       // 为当前节点添加 sort 属性
-      return { id: node.id, type: node.type, sort: level, children };
+      return { id: node.id, type: node.type, sort: level, x: node.x, y: node.y, children };
     };
   
     // 返回包含整个树的根节点
@@ -41,6 +44,8 @@ function buildTree(lf: LogicFlow) {
     const treeNode = outputNodes.map(outputNode => ({
       id: outputNode.id,
       type: 'Output',
+      x: outputNode.x, // 添加 x 位置
+      y: outputNode.y, // 添加 y 位置
       sort: 1, // 最顶层的节点 sort 为 1
       children: buildSubTree(outputNode.id, 2).children // 从第二层开始构建子树
     }));
@@ -51,14 +56,14 @@ function buildTree(lf: LogicFlow) {
     };
 }
 
-
 // 从根节点数组开始遍历树
 function groupNodesBySort(roots: TreeNode[]): SortMap {
     const sortMap: SortMap = {};
     traverseAndGroup(roots, sortMap);
     return sortMap;
   }
-// 遍历树并按sort值分组节点id
+
+  // 遍历树并按sort值分组节点id
 function traverseAndGroup(nodes: TreeNode[], sortMap: SortMap): SortMap {
     nodes.forEach(node => {
       // 添加当前节点的id到对应的sort分组
@@ -79,8 +84,8 @@ function traverseAndGroup(nodes: TreeNode[], sortMap: SortMap): SortMap {
     return sortMap;
   }
   
-
-  function sortNodes(lf: LogicFlow) {
+// 节点排序
+function sortNodes(lf: LogicFlow) {
     // 1.在处理节点前需要先理清节点处理顺序，因为后节点依赖于前节点的active,
     // 因此构建树状结构来表示其层级
     const treeData = buildTree(lf);
@@ -101,5 +106,6 @@ function traverseAndGroup(nodes: TreeNode[], sortMap: SortMap): SortMap {
     // (因为input节点位于treeNode最底层，所以key值最大，要到倒着处理)
     return { sortedKey, sortedNodesData }
 }
+
 
 export { sortNodes }

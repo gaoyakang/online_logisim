@@ -1,4 +1,4 @@
-import LogicFlow from '@logicflow/core'
+import LogicFlow from "@logicflow/core/types/LogicFlow"
 
 type ControlItem = {
   key: string
