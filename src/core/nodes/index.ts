@@ -14,7 +14,15 @@ type Timeout = /*unresolved*/ any
 export type ActiveNodes = {
   // clicked是input节点要表明是否被点击了
   // active是所有节点维护的代表当前节点导通，即输出为1
-  [id: string]: { clicked: boolean, type: string, active: boolean, timer?:Timeout };
+  // timer是为了存储clock节点的定时器
+  // processedInCurrentRound是为了处理多棵树上的input是否被重复处理了
+  [id: string]: { 
+    clicked: boolean, 
+    type: string, 
+    active: boolean, 
+    timer?:Timeout, 
+    processedInCurrentRound?: boolean,
+  };
 }
 export let activeNodes = ref<ActiveNodes>({});//需要点亮的节点和边的id合集
 
@@ -50,30 +58,42 @@ const handleNodeBasedOnType = (lf: LogicFlow, node: any, clickId:string) => {
 
 // 处理节点点击
 export const handleNodeClick = (lf: LogicFlow, clickId: string, isInitialProcessing:boolean = false) => {
-
   // 对树结构进行节点排序
   const { sortedKey, sortedNodesData } = sortNodes(lf)
+  // 0 : ['5', '4', '3', '1']
+  // 1 : ['4', '3', '1']
 
   // issue#1 : https://github.com/gaoyakang/online_logisim/issues/1
   // 如果是初次处理，先处理clock节点
   if (isInitialProcessing) {
-    sortedNodesData[Number(sortedKey[0])].forEach(nodeId => {
-      const node = lf.graphModel.getNodeModelById(nodeId);
-      if (node.type === 'Clock') {
-        // 处理clock节点
-        handleNodeBasedOnType(lf, node, clickId);
-      }
-    });
+    for(let i=0;i<sortedKey.length;i++){
+      sortedNodesData[i][Number(sortedKey[i][0])].forEach((nodeId: string) => {
+        const node = lf.graphModel.getNodeModelById(nodeId);
+        if (node.type === 'Clock') {
+          // 处理clock节点
+          handleNodeBasedOnType(lf, node, clickId);
+        }
+      });
+    }
   }
 
   // 处理其他节点
-  sortedKey.forEach(item => {
-    sortedNodesData[Number(item)].forEach(nodeId => {
-      const node = lf.graphModel.getNodeModelById(nodeId);
-      if (node.type !== 'Clock' || isInitialProcessing) {
-        handleNodeBasedOnType(lf, node, clickId);
-      }
-    });
+  for(let i=0;i<sortedKey.length;i++){
+    for(let j=0;j<sortedKey[i].length;j++){
+      sortedNodesData[i][Number(sortedKey[i][j])].forEach((nodeId: string) => {
+        const node = lf.graphModel.getNodeModelById(nodeId);
+        if (node.type !== 'Clock' || isInitialProcessing) {
+          handleNodeBasedOnType(lf, node, clickId);
+        }
+      });
+    }
+  }
+
+  // issue#2 : https://github.com/gaoyakang/online_logisim/issues/2
+  // 在每次点击事件开始时重置所有节点的processedInCurrentRound标志
+  // 这样下次节点点击来时不会被影响到更新
+  Object.keys(activeNodes.value).forEach((id) => {
+    activeNodes.value[id].processedInCurrentRound = false;
   });
 
   return lf;

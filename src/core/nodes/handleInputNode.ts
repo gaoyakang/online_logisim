@@ -5,6 +5,10 @@ import { updateNodeById } from "./updateNodeById.ts";
 
 // 处理input类型节点
 const handleInputNode = (lf: LogicFlow, nodeId: string, clickId: string, activeNodes: Ref<ActiveNodes>) => {
+    // 检查节点是否已经在当前轮次被处理过
+    if (activeNodes.value[nodeId]?.processedInCurrentRound) {
+      return activeNodes;
+    }
     // 创建一个临时对象来记录本次点击事件中已处理的节点ID
     const processedNodes = new Set();
     // 检查节点ID是否与被点击的节点ID相同
@@ -19,7 +23,7 @@ const handleInputNode = (lf: LogicFlow, nodeId: string, clickId: string, activeN
           updateNodeById(lf,clickId,clicked)
           
           // 更新节点状态
-          activeNodes.value[clickId] = { clicked, type:'Input', active:clicked };
+          activeNodes.value[clickId] = { clicked, type:'Input', active:clicked, processedInCurrentRound: true };
     }else{
       // 未点击的节点暂时不需要处理，给默认值即可
       if(!activeNodes.value[nodeId]){

@@ -19,8 +19,13 @@ const handleOutputNode = (lf: LogicFlow, nodeId: string, activeNodes: Ref<Active
             // 如果前一节点的active状态为true则需要点亮该output节点，否则不做处理
             if (previousNodeActiveState && previousNodeActiveState.active) {
               updateNodeById(lf,nodeId,true)
+              // 将当前节点存到全局数组中
+              activeNodes.value[nodeId] = { clicked:false, type:'Output', active:true };
             } else {
               updateNodeById(lf,nodeId,false)
+              // 将当前节点存到全局数组中
+              activeNodes.value[nodeId] = { clicked:false, type:'Output', active:false };
+
             }
           }
     })

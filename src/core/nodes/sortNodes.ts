@@ -11,7 +11,7 @@ interface TreeNode {
 // 对树结构排序的类型
 type SortMap = {
     [sort: number]: string[];
-  };
+};
 
 // 创建树结构
 function buildTree(lf: LogicFlow) {
@@ -63,12 +63,19 @@ function traverseAndGroup(nodes: TreeNode[], sortMap: SortMap): SortMap {
     nodes.forEach(node => {
       // 添加当前节点的id到对应的sort分组
       const idsForSort = sortMap[node.sort] || (sortMap[node.sort] = []);
-      idsForSort.push(node.id);
+      // issue#2 : https://github.com/gaoyakang/online_logisim/issues/2
+      if (!idsForSort.includes(node.id)) {
+        idsForSort.push(node.id);
+      }
   
       // 递归遍历子节点
       traverseAndGroup(node.children, sortMap);
     });
-  
+    
+    // 将Set转换为数组
+    for (const key in sortMap) {
+      sortMap[key] = Array.from(sortMap[key]);
+    }
     return sortMap;
   }
   
@@ -82,10 +89,16 @@ function traverseAndGroup(nodes: TreeNode[], sortMap: SortMap): SortMap {
 
     // 2.然后自底向上处理节点
     // groupNodesBySort会遍历treeNode将sort指相等的节点存在：{sort1:[id1,id2,...],sort2:[id3,id4,...]}
-    const sortedNodesData = groupNodesBySort(trees)
+    let sortedNodesData = [];
+    let sortedKey = [];
+    for(let i=0;i<trees.length;i++){
+      sortedNodesData.push(groupNodesBySort([trees[i]]))
+    }
+    for(let i=0;i<sortedNodesData.length;i++){
+      sortedKey.push(Object.keys(sortedNodesData[i]).sort((a, b) => Number(b) - Number(a)))
+    }
     // 对sortedNodesData的key从大到小排序，返回[key1,key2,key3,...]
     // (因为input节点位于treeNode最底层，所以key值最大，要到倒着处理)
-    const sortedKey = Object.keys(sortedNodesData).sort((a, b) => Number(b) - Number(a))
     return { sortedKey, sortedNodesData }
 }
 
