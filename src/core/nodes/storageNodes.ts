@@ -1,10 +1,12 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
 import { ActiveNodes, EdgeType, TreeNode } from "./types";
+import BaseEdgeModel from "@logicflow/core/types/model/edge/BaseEdgeModel";
 
 // 序列化节点数据
-function saveTreeToLocalStorage(treeData: { lf?: LogicFlow; treeNode: TreeNode[]; }) {
+function saveTreeToLocalStorage(treeData: { lf?: LogicFlow; treeNode: TreeNode[]; edges: BaseEdgeModel[]}) {
   const nodesArray = flattenTree(treeData.treeNode); // 将树结构展平为节点数组
-  const edgesArray = getEdgesFromTree(treeData.treeNode); // 从树结构中提取边的信息
+  // issue#3 https://github.com/gaoyakang/online_logisim/issues/3
+  const edgesArray = getEdgesFromEdges(treeData.edges)
 
   // 序列化节点和边
   const serializedNodes = JSON.stringify(nodesArray);
@@ -15,17 +17,23 @@ function saveTreeToLocalStorage(treeData: { lf?: LogicFlow; treeNode: TreeNode[]
   localStorage.setItem('edges', serializedEdges);
 }
 
+
 // 从树结构中提取边的信息
-function getEdgesFromTree(treeNodes: TreeNode[], parent?: TreeNode): any[] {
-  return treeNodes.reduce((edges:EdgeType[], node) => {
-    if (parent) {
-      edges.push({ sourceNodeId: node.id, targetNodeId: parent.id, type: "bezier" });
-    }
-    node.children.forEach((child: TreeNode) => {
-      edges = edges.concat(getEdgesFromTree([child], node));
-    });
-    return edges;
-  }, []);
+function getEdgesFromEdges(edges: BaseEdgeModel[]): EdgeType[] {
+  return edges.map(edge => {
+    return {
+      id: edge.id, // 边的 ID
+      type: edge.type, // 边的类型
+      startPoint: edge.startPoint, // 边的起始点
+      endPoint: edge.endPoint, // 边的终点
+      pointsList: edge.pointsList, // 边的路径点列表
+      properties: edge.properties, // 边的属性
+      sourceNodeId: edge.sourceNodeId, // 起始节点 ID
+      targetNodeId: edge.targetNodeId, // 目标节点 ID
+      sourceAnchorId: edge.sourceAnchorId,
+      targetAnchorId: edge.targetAnchorId,
+    };
+  });
 }
 
 // 将树结构展平为节点数组，便于存储转换重现

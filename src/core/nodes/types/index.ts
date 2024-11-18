@@ -1,4 +1,6 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
+import GraphModel from "@logicflow/core/types/model/GraphModel";
+import { Point } from "@logicflow/core/types/type";
 
 // 处理clock类型节点：目前仅支持1个clock源
 export type Timeout = /*unresolved*/ any
@@ -35,9 +37,17 @@ export type SortMap = {
 
 // 节点彼此连接关系的树结构类型
 export interface EdgeType {
+  id: string
+  type: string
+  startPoint:Point
+  endPoint:Point
+  pointsList: any[];
+  properties:Object
   sourceNodeId: string
   targetNodeId: string
-  type: string
+  graphModel?: GraphModel
+  sourceAnchorId: string;
+  targetAnchorId: string;
 }
 
 // control插件类型
