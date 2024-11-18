@@ -1,8 +1,8 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
 import { BaseNodeModel } from "@logicflow/core/types/model/node";
 import { updateNodeById } from "./updateNodeById";
-import { ActiveNodes } from ".";
 import { Ref } from "vue";
+import { ActiveNodes } from "./types";
 
 // 处理AndGate类型节点
 const handleAndGateNode = (lf: LogicFlow, node: BaseNodeModel, activeNodes: Ref<ActiveNodes>) => {

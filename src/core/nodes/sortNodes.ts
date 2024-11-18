@@ -1,19 +1,6 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
-
-// 节点彼此连接关系的树结构类型
-export interface TreeNode {
-    id: string
-    type: string
-    sort: number
-    x: number
-    y: number
-    children: TreeNode[];
-}
-  
-// 对树结构排序的类型
-type SortMap = {
-    [sort: number]: string[];
-};
+import { saveTreeToLocalStorage } from "./storageNodes";
+import { SortMap, TreeNode } from "./types";
 
 // 创建树结构
 export function buildTree(lf: LogicFlow) {
@@ -89,6 +76,10 @@ function sortNodes(lf: LogicFlow) {
     // 1.在处理节点前需要先理清节点处理顺序，因为后节点依赖于前节点的active,
     // 因此构建树状结构来表示其层级
     const treeData = buildTree(lf);
+    // 保存节点数据
+    if(!localStorage.getItem("nodes")){
+      saveTreeToLocalStorage(treeData)
+    }
     lf = treeData.lf
     const trees = treeData.treeNode;
 

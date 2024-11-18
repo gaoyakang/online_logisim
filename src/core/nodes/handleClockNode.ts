@@ -1,9 +1,10 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
-import { ActiveNodes, handleNodeClick } from "./index.ts";
+import { handleNodeClick } from "./index.ts";
 import { Ref } from 'vue'
+import { ActiveNodes, Timeout } from "./types/index.ts";
 
-// 处理clock类型节点：目前仅支持1个clock源
-type Timeout = /*unresolved*/ any
+
+
 const handleClockNode = (lf: LogicFlow, node: any, activeNodes: Ref<ActiveNodes>) => {
     // 首次处理clock
     if (!activeNodes.value[node.id]) {

@@ -4,21 +4,9 @@ import LogicFlow from "@logicflow/core/types/LogicFlow";
 import ACollapse from "ant-design-vue/es/collapse";
 import ACollapsePanel from "ant-design-vue/es/collapse/CollapsePanel";
 import { VNode, createApp, h } from "vue";
+import { GroupItem, ShapeItem } from "../core/nodes/types";
 
-type ShapeItem = {
-  type?: string;
-  text?: string;
-  icon?: string;
-  label?: string;
-  className?: string;
-  properties?: Record<string, any>;
-  callback?: (lf: LogicFlow, container: HTMLElement) => void;
-};
 
-type GroupItem = {
-  group: string;
-  items?: ShapeItem[];
-};
 
 class DndPanelVue {
   lf: LogicFlow;

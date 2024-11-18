@@ -1,6 +1,7 @@
 import { Ref, ref } from 'vue'
 import { activeNodes, handleNodeClick } from "../nodes";
 import LogicFlow from '@logicflow/core/types/LogicFlow';
+import { clearLocalstorage } from '../nodes/storageNodes';
 
 // dnd菜单列表
 const dndData = ref([
@@ -80,30 +81,27 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
       /* @ts-ignore */
       onClick: (lf: LogicFlow, ev: any) => {
 
-      // 切换状态
-      simulationActive.value = !simulationActive.value;
-      // 开始仿真就需要处理一遍节点，
-      // 因为有可能有非门，当输入为0时非门就应该有1的状态
-      // 同时又可能有时钟，需要每隔固定时间遍历一遍节点
-      if(simulationActive.value){
-        handleNodeClick(that,'',true)
-      }else{
-        // TODO: 重置activeNodes
-      }
-      // 获取所有节点
-      lf = lf.lf; // bug-#IB3T6D : https://gitee.com/lonelyzoom/online-logisim/issues/IB3T6D
-      const nodes = lf.graphModel.nodes;
+        // 切换状态
+        simulationActive.value = !simulationActive.value;
+        // 开始仿真就需要处理一遍节点，
+        // 同时又可能有时钟，需要每隔固定时间遍历一遍节点
+        if(simulationActive.value){
+          handleNodeClick(that,'',true)
+        }
+        // 获取所有节点
+        lf = lf.lf; // bug-#IB3T6D : https://gitee.com/lonelyzoom/online-logisim/issues/IB3T6D
+        const nodes = lf.graphModel.nodes;
 
-      // 遍历所有节点，并更新每个节点的status属性
-      // simulation代表处于仿真状态
-      // normal代表处于一般状态
-      // 此处更改会导致对应节点的getShape处改变节点形状
-      nodes.forEach((node: { id: any; }) => {
-          lf.setProperties(node.id, {
-          status: simulationActive.value ? 'simulation' : 'normal',
-          });
-      });
-  },
+        // 遍历所有节点，并更新每个节点的status属性
+        // simulation代表处于仿真状态
+        // normal代表处于一般状态
+        // 此处更改会导致对应节点的getShape处改变节点形状
+        nodes.forEach((node: { id: any; }) => {
+            lf.setProperties(node.id, {
+              status: simulationActive.value ? 'simulation' : 'normal',
+            });
+        });
+      },
   })
   // 添加导航按钮
   lf.extension.control.addItem({
@@ -113,8 +111,8 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
       text: "导航",
       /* @ts-ignore */
       onClick: (lf: any, ev: any) => {
-      // 指定小地图显示在特定位置
-      lf.extension.miniMap.show(containerRef.value.offsetWidth - 170, containerRef.value.offsetHeight - 320);
+        // 指定小地图显示在特定位置
+        lf.extension.miniMap.show(containerRef.value.offsetWidth - 170, containerRef.value.offsetHeight - 320);
       }
   })
   // 清空画布按钮
@@ -126,6 +124,7 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
       /* @ts-ignore */
       onClick: (lf: any, ev: any) => {
         activeNodes.value = {};
+        clearLocalstorage()
 
         // 重新渲染逻辑流图
         that.clearData();
@@ -134,7 +133,6 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
         simulationActive.value = false;
       }
   })
-
   // 添加源码按钮
   lf.extension.control.addItem({
     key: 'sourcecode',

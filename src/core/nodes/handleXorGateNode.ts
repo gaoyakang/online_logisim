@@ -1,8 +1,8 @@
 import { updateNodeById } from "./updateNodeById";
-import { ActiveNodes } from ".";
 import { Ref } from "vue";
 import LogicFlow from "@logicflow/core/types/LogicFlow";
 import BaseNodeModel from "@logicflow/core/types/model/node/BaseNodeModel";
+import { ActiveNodes } from "./types";
 
 // 处理 XorGate 类型节点
 const handleXorGateNode = (lf: LogicFlow, node: BaseNodeModel, activeNodes: Ref<ActiveNodes>,) => {

@@ -1,14 +1,5 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow"
-
-type ControlItem = {
-  key: string
-  iconClass: string
-  title: string
-  text: string
-  onClick?: (lf: LogicFlow, e: MouseEvent) => void
-  onMouseEnter?: (lf: LogicFlow, e: MouseEvent) => void
-  onMouseLeave?: (lf: LogicFlow, e: MouseEvent) => void
-}
+import { ControlItem } from "../core/nodes/types"
 
 export class Control {
   static pluginName = 'control'

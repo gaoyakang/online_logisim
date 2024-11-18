@@ -8,22 +8,8 @@ import { handleNotGateNode } from "./handleNotGateNode";
 import { handleXorGateNode } from "./handleXorGateNode";
 import { handleClockNode } from "./handleClockNode";
 import LogicFlow from "@logicflow/core/types/LogicFlow";
+import { ActiveNodes } from "./types";
 
-// 需要点亮的节点和边的id合集类型
-type Timeout = /*unresolved*/ any
-export type ActiveNodes = {
-  // clicked是input节点要表明是否被点击了
-  // active是所有节点维护的代表当前节点导通，即输出为1
-  // timer是为了存储clock节点的定时器
-  // processedInCurrentRound是为了处理多棵树上的input是否被重复处理了
-  [id: string]: { 
-    clicked: boolean, 
-    type: string, 
-    active: boolean, 
-    timer?:Timeout, 
-    processedInCurrentRound?: boolean,
-  };
-}
 export let activeNodes: Ref<ActiveNodes> = ref<ActiveNodes>({})
 
 // 根据节点类型处理节点

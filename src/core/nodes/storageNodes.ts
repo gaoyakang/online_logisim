@@ -1,12 +1,6 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
-import { TreeNode } from './sortNodes'
+import { ActiveNodes, EdgeType, TreeNode } from "./types";
 
-// 节点彼此连接关系的树结构类型
-interface EdgeType {
-  sourceNodeId: string
-  targetNodeId: string
-  type: string
-}
 // 序列化节点数据
 function saveTreeToLocalStorage(treeData: { lf?: LogicFlow; treeNode: TreeNode[]; }) {
   const nodesArray = flattenTree(treeData.treeNode); // 将树结构展平为节点数组
@@ -25,7 +19,7 @@ function saveTreeToLocalStorage(treeData: { lf?: LogicFlow; treeNode: TreeNode[]
 function getEdgesFromTree(treeNodes: TreeNode[], parent?: TreeNode): any[] {
   return treeNodes.reduce((edges:EdgeType[], node) => {
     if (parent) {
-      edges.push({ sourceNodeId: parent.id, targetNodeId: node.id, type: "bezier" });
+      edges.push({ sourceNodeId: node.id, targetNodeId: parent.id, type: "bezier" });
     }
     node.children.forEach((child: TreeNode) => {
       edges = edges.concat(getEdgesFromTree([child], node));
@@ -81,7 +75,32 @@ function restoreFromLocalStorage() {
   return {nodes, edges}
 }
 
+// 从本地存储中恢复数据，并将其转换为ActiveNodes类型
+function restoreActiveNodesData(): ActiveNodes {
+  const rawData = restoreFromLocalStorage() || { nodes: [], edges: [] };
+  const nodes = rawData.nodes.map((node: any) => {
+    return {
+      ...node,
+      clicked: false,
+      active: false,
+      timer: null,
+      processedInCurrentRound: false,
+    };
+  });
+  return nodes.reduce((acc: { [x: string]: any; }, node: { id: string | number; }) => {
+    acc[node.id] = node;
+    return acc;
+  }, {} as ActiveNodes);
+}
+
+// 清空localstorage
+function clearLocalstorage(){
+  localStorage.clear();
+}
+
 export {
   saveTreeToLocalStorage,
-  restoreFromLocalStorage
+  restoreFromLocalStorage,
+  restoreActiveNodesData,
+  clearLocalstorage
 }
