@@ -94,7 +94,7 @@ class XorGateModel extends RectNodeModel {
             {
                 x: x - 10,
                 y: y + width / 4,
-                id: 'xorgate-lefttop-input',
+                id: 'xorgate-left-top',
                 type: 'left-top',
                 direction: 'top',
                 style: { r: 5, fill: 'orange' }
@@ -103,7 +103,7 @@ class XorGateModel extends RectNodeModel {
             {
                 x: x - 10,
                 y: y + width * 3 / 4,
-                id: 'xorgate-leftbottom-input',
+                id: 'xorgate-left-bottom',
                 type: 'left-bottom',
                 direction: 'bottom',
                 style: { r: 5, fill: 'orange' }
@@ -112,7 +112,7 @@ class XorGateModel extends RectNodeModel {
             {
                 x: x + width*2 -5,
                 y: y + width/2,
-                id: 'xorgate-right-output',
+                id: 'xorgate-right',
                 type: 'right',
                 direction: 'right',
                 style: { r: 5, fill: 'orange' }

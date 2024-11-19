@@ -43,6 +43,8 @@ const handleNodeBasedOnType = (lf: LogicFlow, node: any, clickId:string) => {
 
 // 处理节点点击
 export const handleNodeClick = (lf: LogicFlow, clickId: string, isInitialProcessing:boolean = false) => {
+  // 判断节点的锚点是否都连上了节点
+  
   // 对树结构进行节点排序
   const { sortedKey, sortedNodesData } = sortNodes(lf)
   // 0 : ['5', '4', '3', '1']

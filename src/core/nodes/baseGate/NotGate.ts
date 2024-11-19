@@ -88,7 +88,7 @@ class NotGateModel extends RectNodeModel {
             {
                 x: x,
                 y: y + width/2,
-                id: 'notgate-left-input',
+                id: 'notgate-left',
                 type: 'left-top',
                 direction: 'left',
                 style: { r: 3, fill: 'orange' }
@@ -97,7 +97,7 @@ class NotGateModel extends RectNodeModel {
             {
                 x: x + ((width * Math.sqrt(3)) / 2) +15,
                 y: y + width/2,
-                id: 'notgate-right-output',
+                id: 'notgate-right',
                 type: 'right',
                 direction: 'right',
                 style: { r: 3, fill: 'orange' }

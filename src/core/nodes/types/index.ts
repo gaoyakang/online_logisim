@@ -35,6 +35,9 @@ export type SortMap = {
   [sort: number]: string[];
 };
 
+// 定义锚点对象的类型
+export type AnchorMap = { [nodeId: string]: string[] };
+
 // 节点彼此连接关系的树结构类型
 export interface EdgeType {
   id: string

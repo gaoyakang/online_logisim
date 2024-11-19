@@ -97,7 +97,7 @@ class OutputModel extends CircleNodeModel {
     anchors.push({
       x: x - radius, // 锚点在圆的最左侧
       y: y,
-      id: "output-left-input",
+      id: "output_left_anchor",
       type: "left",
       direction: "left",
       style: { fill: "orange", r: 3 }, // 设置锚点样式

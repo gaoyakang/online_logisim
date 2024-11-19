@@ -85,7 +85,7 @@ class OrGateModel extends RectNodeModel {
             {
                 x: x,
                 y: y,
-                id: 'orgate-left-top',
+                id: 'orgate-lefttop-input',
                 type: 'left-top',
                 direction: 'top',
                 style: { r: 5, fill: 'orange' }
@@ -94,7 +94,7 @@ class OrGateModel extends RectNodeModel {
             {
                 x: x,
                 y: y+width,
-                id: 'orgate-left-bottom',
+                id: 'orgate-leftbottom-input',
                 type: 'left-bottom',
                 direction: 'bottom',
                 style: { r: 5, fill: 'orange' }
@@ -103,7 +103,7 @@ class OrGateModel extends RectNodeModel {
             {
                 x: x + width*2 -5,
                 y: y + width/2,
-                id: 'orgate-right',
+                id: 'orgate-right-output',
                 type: 'right',
                 direction: 'right',
                 style: { r: 5, fill: 'orange' }

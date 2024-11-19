@@ -1,39 +1,23 @@
 import { h, RectNode, RectNodeModel } from "@logicflow/core";
 
 // 节点形状
-class InputView extends RectNode {
+class ClockView extends RectNode {
   getShape() {
     // 获取形状属性
     const { model } = this.props;
-    const { x, y, width, height, radius, properties } = model;
+    const { x, y, width, height, } = model;
     // 获取样式属性
     const style = model.getNodeStyle();
-
-    // 不同模式下的样式
-    const normalStyle = {
-      stroke: "black", // 圆环的边框颜色
-      fill: "none", // 确保圆内部是空的
-    };
-    const simulationStyle = {
-      stroke: "none", // 圆环的边框颜色
-      fill: "black", // 确保圆内部是空的
-    };
-    const clickedStyle = {
-      stroke: "none", // 圆环的边框颜色
-      fill: "green", // 确保圆内部是空的
-    };
-
-    // 确定样式
-    let currentMode;
-    if((properties.status === "simulation")){
-      if(properties.clicked){
-        currentMode = clickedStyle;
-      }else{
-        currentMode = simulationStyle
-      }
-    }else{
-      currentMode = normalStyle;
-    }
+    const clockPath = `
+          M ${x} ${y + 3*width/4}
+          L ${x+5} ${y + 3*width/4}
+          L ${x+5} ${y + width/4}
+          L ${x+10} ${y + width/4}
+          L ${x+10} ${y + 3*width/4}
+          L ${x+15} ${y + 3*width/4}
+          L ${x+15} ${y + width/4}
+          L ${x+20} ${y + width/4}
+    `;
     // 计算节点路径
     return h("g", {}, [
       // 节点的外框
@@ -46,14 +30,10 @@ class InputView extends RectNode {
         rx: 0,
         ry: 0,
       }),
-      // 节点的内圆
-      h("circle", {
-        cx: x + width / 2, // 圆心的x坐标与矩形中心的x坐标相同
-        cy: y + height / 2, // 圆心的y坐标与矩形中心的y坐标相同
-        r: radius, // 圆的半径，可以根据需要调整
-        stroke: currentMode.stroke, // 圆环的边框颜色
-        fill: currentMode.fill, // 确保圆内部是空的
-        "stroke-width": 2, // 圆环的宽度，可以根据需要调整
+      // 方形波线条
+      h('path', {
+        ...style,
+        d: clockPath,
       }),
       // 节点的输出点
       h("circle", {
@@ -67,16 +47,13 @@ class InputView extends RectNode {
 }
 
 // 节点数据
-class InputModel extends RectNodeModel {
+class ClockModel extends RectNodeModel {
   // 节点形状初始化数据
   initNodeData(data: any): void {
     super.initNodeData(data);
     this.width = 20;
     this.height = 20;
     this.radius = 5;
-    // simulation代表处于仿真状态
-    // normal代表处于一般状态
-    this.properties.status = "normal";
   }
 
   // 节点样式
@@ -104,7 +81,7 @@ class InputModel extends RectNodeModel {
       {
         x: x + width, // 锚点在矩形的最右侧
         y: y + height / 2,
-        id: "input-right-output",
+        id: "clock_right_anchor",
         type: "right",
         direction: "right",
         // 设置锚点样式
@@ -115,7 +92,7 @@ class InputModel extends RectNodeModel {
 }
 
 export default {
-  type: "Input",
-  view: InputView,
-  model: InputModel,
+  type: "Clock",
+  view: ClockView,
+  model: ClockModel,
 };
