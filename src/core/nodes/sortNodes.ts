@@ -30,27 +30,34 @@ export function buildTree(lf: LogicFlow) {
   
   
   // 2.检查每个锚点是否有连线
-  nodes.forEach(node => {
+  // issue#4: https://github.com/gaoyakang/online_logisim/issues/4
+  for (const node of nodes) {
     const nodeAnchorIds = nodeAnchors[node.id] || [];
-    nodeAnchorIds.forEach(anchorId => {
+    for (const anchorId of nodeAnchorIds) {
       const isInput = anchorId.endsWith('-input');
       const isOutput = anchorId.endsWith('-output');
-      const hasConnection = edges.some(edge => {
-        if (isInput) return edge.targetAnchorId === anchorId;
-        if (isOutput) return edge.sourceAnchorId === anchorId;
-        return false;
-      });
-
+      let hasConnection = false;
+  
+      for (const edge of edges) {
+        if (isInput && edge.targetAnchorId === anchorId && edge.targetNodeId === node.id) {
+          hasConnection = true;
+          break;
+        } else if (isOutput && edge.sourceAnchorId === anchorId && edge.sourceNodeId === node.id) {
+          hasConnection = true;
+          break;
+        }
+      }
+  
       if (!hasConnection) {
-        // 重置simulation状态
-        simulationActive.value = false
+        // 重置 simulation 状态
+        simulationActive.value = false;
         // 弹窗提醒
         alert("电路中有未连接的节点");
-        return
+        throw new Error("电路中有未连接的节点"); // 抛出异常以立即停止所有操作
       }
-    });
-  });
-
+    }
+  }
+  
 
   // 定义一个辅助函数，用于递归构建子树
   const buildSubTree = (nodeId: string, level: number): TreeNode => {
