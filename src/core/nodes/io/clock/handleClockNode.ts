@@ -1,7 +1,7 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
-import { handleNodeClick } from "./index.ts";
 import { Ref } from 'vue'
-import { ActiveNodes, Timeout } from "./types/index.ts";
+import { handleNodeClick } from "../..";
+import { ActiveNodes, Timeout } from "../../types";
 
 
 

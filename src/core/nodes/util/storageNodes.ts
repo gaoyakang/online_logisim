@@ -1,9 +1,9 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
-import { ActiveNodes, EdgeType, TreeNode } from "./types";
 import BaseEdgeModel from "@logicflow/core/types/model/edge/BaseEdgeModel";
+import { ActiveNodes, EdgeType, TreeNode } from "../types";
 
 // 序列化节点数据
-function saveTreeToLocalStorage(treeData: { lf?: LogicFlow; treeNode: TreeNode[]; edges: BaseEdgeModel[]}) {
+function saveTreeToLocalStorageData(treeData: { lf?: LogicFlow; treeNode: TreeNode[]; edges: BaseEdgeModel[]}) {
   const nodesArray = flattenTree(treeData.treeNode); // 将树结构展平为节点数组
   // issue#3 https://github.com/gaoyakang/online_logisim/issues/3
   const edgesArray = getEdgesFromEdges(treeData.edges)
@@ -107,7 +107,7 @@ function clearLocalstorage(){
 }
 
 export {
-  saveTreeToLocalStorage,
+  saveTreeToLocalStorageData,
   restoreFromLocalStorage,
   restoreActiveNodesData,
   clearLocalstorage

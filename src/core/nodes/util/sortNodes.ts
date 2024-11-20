@@ -1,13 +1,14 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
-import { saveTreeToLocalStorage } from "./storageNodes";
-import { AnchorMap, SortMap, TreeNode } from "./types";
-import { simulationActive } from "../plugins/setPlugins";
+import { AnchorMap, SortMap, TreeNode } from "../types";
+import { simulationActive } from "../../plugins/setPlugins";
+import { saveTreeToLocalStorageData } from "./storageNodes";
 
 // 创建树结构
 export function buildTree(lf: LogicFlow) {
     
   // 获取所有节点和边的信息
   const { nodes, edges } = lf.graphModel;
+
   // 每个节点可能有多个锚点，每个锚点的命名为：节点名称-锚点位置-锚点类型(input/output)
   // 每个锚点应该至少有一条连线
   // 遍历nodes将每个node的锚点保存成{ nodeid: [nodeanchorid1,nodeanchorid2,...] }
@@ -16,7 +17,6 @@ export function buildTree(lf: LogicFlow) {
   // output时判断edge.sourceAnchorId === nodeanchorid，结果是true说明该锚点上有连线，false说明该锚点上没有连线
   // 只要发现一个false就抛出错误：console.error("电路中有未连接的节点")
   // 将每个节点的锚点保存成 { nodeid: [nodeanchorid1, nodeanchorid2, ...] } 的结构
-  
 
   // 1.将每个节点的锚点保存成 { nodeid: [nodeanchorid1, nodeanchorid2, ...] } 的结构
   const nodeAnchors: AnchorMap = nodes.reduce((acc, node) => {
@@ -28,7 +28,7 @@ export function buildTree(lf: LogicFlow) {
     return acc;
   }, {} as AnchorMap);
   
-  
+  // console.log(`nodeAnchors：${nodeAnchors}`)
   // 2.检查每个锚点是否有连线
   // issue#4: https://github.com/gaoyakang/online_logisim/issues/4
   for (const node of nodes) {
@@ -58,7 +58,6 @@ export function buildTree(lf: LogicFlow) {
     }
   }
   
-
   // 定义一个辅助函数，用于递归构建子树
   const buildSubTree = (nodeId: string, level: number): TreeNode => {
     const node = nodes.find(n => n.id === nodeId);
@@ -100,7 +99,7 @@ function groupNodesBySort(roots: TreeNode[]): SortMap {
     const sortMap: SortMap = {};
     traverseAndGroup(roots, sortMap);
     return sortMap;
-  }
+}
 
   // 遍历树并按sort值分组节点id
 function traverseAndGroup(nodes: TreeNode[], sortMap: SortMap): SortMap {
@@ -121,7 +120,7 @@ function traverseAndGroup(nodes: TreeNode[], sortMap: SortMap): SortMap {
       sortMap[key] = Array.from(sortMap[key]);
     }
     return sortMap;
-  }
+}
   
 // 节点排序
 function sortNodes(lf: LogicFlow) {
@@ -129,7 +128,7 @@ function sortNodes(lf: LogicFlow) {
     // 因此构建树状结构来表示其层级
     const treeData = buildTree(lf);
     // 保存节点数据
-    saveTreeToLocalStorage(treeData)
+    saveTreeToLocalStorageData(treeData)
     lf = treeData.lf
     const trees = treeData.treeNode;
 

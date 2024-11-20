@@ -1,43 +1,20 @@
 import { Ref, ref } from "vue";
-import { sortNodes } from "./sortNodes";
-import { handleInputNode } from "./handleInputNode";
-import { handleOutputNode } from "./handleOutputNode";
-import { handleAndGateNode } from "./handleAndGateNode";
-import { handleOrGateNode } from "./handleOrGateNode";
-import { handleNotGateNode } from "./handleNotGateNode";
-import { handleXorGateNode } from "./handleXorGateNode";
-import { handleClockNode } from "./handleClockNode";
 import LogicFlow from "@logicflow/core/types/LogicFlow";
+import BaseNodeModel from "@logicflow/core/types/model/node/BaseNodeModel";
 import { ActiveNodes } from "./types";
+import { sortNodes } from "./util/sortNodes";
+import { handlers } from "../constant";
 
 export let activeNodes: Ref<ActiveNodes> = ref<ActiveNodes>({})
 
-// 根据节点类型处理节点
-const handleNodeBasedOnType = (lf: LogicFlow, node: any, clickId:string) => {
-  switch (node.type) {
-    case 'Input':
-      activeNodes = handleInputNode(lf, node.id, clickId, activeNodes);
-      break;
-    case 'Output':
-      activeNodes = handleOutputNode(lf, node.id, activeNodes);
-      break;
-    case 'AndGate':
-      activeNodes = handleAndGateNode(lf, node, activeNodes);
-      break;
-    case 'OrGate':
-        activeNodes = handleOrGateNode(lf, node, activeNodes);
-      break;
-    case 'NotGate':
-        activeNodes = handleNotGateNode(lf, node, activeNodes, clickId);
-      break;
-    case 'XorGate':
-        activeNodes = handleXorGateNode(lf, node, activeNodes);
-      break;
-    case 'Clock':
-        activeNodes = handleClockNode(lf, node,activeNodes);
-      break;
-    default:
-      console.log('未处理的节点类型');
+// 根据节点类型处理节点：采用表结构命中而非switch判断
+const handleNodeBasedOnType = (lf: LogicFlow, node: BaseNodeModel, activeNodes: Ref<ActiveNodes>, clickId?: string, ) => {
+  const handler = handlers[node.type];
+  if (handler) {
+    return handler(lf, node, activeNodes, clickId);
+  } else {
+    console.log('未处理的节点类型');
+    return activeNodes; // 或者根据需要返回其他值
   }
 };
 
@@ -58,7 +35,7 @@ export const handleNodeClick = (lf: LogicFlow, clickId: string, isInitialProcess
         const node = lf.graphModel.getNodeModelById(nodeId);
         if (node.type === 'Clock') {
           // 处理clock节点
-          handleNodeBasedOnType(lf, node, clickId);
+          handleNodeBasedOnType(lf, node, activeNodes, clickId);
         }
       });
     }
@@ -70,7 +47,7 @@ export const handleNodeClick = (lf: LogicFlow, clickId: string, isInitialProcess
       sortedNodesData[i][Number(sortedKey[i][j])].forEach((nodeId: string) => {
         const node = lf.graphModel.getNodeModelById(nodeId);
         if (node.type !== 'Clock' || isInitialProcessing) {
-          handleNodeBasedOnType(lf, node, clickId);
+          handleNodeBasedOnType(lf, node, activeNodes, clickId);
         }
       });
     }

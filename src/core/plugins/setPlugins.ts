@@ -1,8 +1,8 @@
 import { Ref, ref } from 'vue'
 import { activeNodes, handleNodeClick } from "../nodes";
 import LogicFlow from '@logicflow/core/types/LogicFlow';
-import { clearLocalstorage } from '../nodes/storageNodes';
 import { dndData } from '../constant';
+import { clearLocalstorage } from '../nodes/util/storageNodes';
 
 
 // 仿真按钮的状态

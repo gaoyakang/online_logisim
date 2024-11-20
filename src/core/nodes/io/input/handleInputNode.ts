@@ -1,7 +1,7 @@
 import { Ref } from 'vue'
-import { updateNodeById } from "./updateNodeById.ts";
 import LogicFlow from "@logicflow/core/types/LogicFlow";
-import { ActiveNodes } from './types/index.ts';
+import { ActiveNodes } from '../../types';
+import { updateNodeById } from '../../util/updateNodeById';
 
 // 处理input类型节点
 const handleInputNode = (lf: LogicFlow, nodeId: string, clickId: string, activeNodes: Ref<ActiveNodes>) => {

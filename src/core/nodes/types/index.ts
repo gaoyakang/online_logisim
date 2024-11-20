@@ -1,6 +1,8 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
 import GraphModel from "@logicflow/core/types/model/GraphModel";
+import BaseNodeModel from "@logicflow/core/types/model/node/BaseNodeModel";
 import { Point } from "@logicflow/core/types/type";
+import { Ref } from "vue";
 
 // 处理clock类型节点：目前仅支持1个clock源
 export type Timeout = /*unresolved*/ any
@@ -79,3 +81,6 @@ export type GroupItem = {
   group: string;
   items?: ShapeItem[];
 };
+
+// 不同类型节点处理函数的类型
+export type Handler = (lf: LogicFlow, node: BaseNodeModel, activeNodes: Ref<ActiveNodes>, clickId?: string) => Ref<ActiveNodes>;

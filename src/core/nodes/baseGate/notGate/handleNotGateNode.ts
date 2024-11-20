@@ -1,8 +1,8 @@
-import { updateNodeById } from "./updateNodeById";
 import { Ref } from "vue";
 import LogicFlow from "@logicflow/core/types/LogicFlow";
 import BaseNodeModel from "@logicflow/core/types/model/node/BaseNodeModel";
-import { ActiveNodes } from "./types";
+import { updateNodeById } from "../../util/updateNodeById";
+import { ActiveNodes } from "../../types";
 
 // 处理 NotGate 类型节点
 const handleNotGateNode = (lf: LogicFlow, node: BaseNodeModel, activeNodes: Ref<ActiveNodes>, clickId:string) => {

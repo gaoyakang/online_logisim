@@ -1,4 +1,12 @@
 import  { ref } from "vue"
+import { Handler } from "../nodes/types";
+import { handleAndGateNode } from "../nodes/baseGate/andGate/handleAndGateNode";
+import { handleNotGateNode } from "../nodes/baseGate/notGate/handleNotGateNode";
+import { handleOrGateNode } from "../nodes/baseGate/orGate/handleOrGateNode";
+import { handleXorGateNode } from "../nodes/baseGate/xorGate/handleXorGateNode";
+import { handleClockNode } from "../nodes/io/clock/handleClockNode";
+import { handleInputNode } from "../nodes/io/input/handleInputNode";
+import { handleOutputNode } from "../nodes/io/output/handleOutputNode";
 
 // dnd菜单列表
 const dndData = ref([
@@ -48,6 +56,17 @@ const dndData = ref([
     }
 ]) 
 
+// 根据节点类型处理节点
+const handlers: Record<string, Handler> = {
+  'Input': (lf, node, activeNodes, clickId) => handleInputNode(lf, node.id, clickId ?? '', activeNodes),
+  'Output': (lf, node, activeNodes) => handleOutputNode(lf, node.id, activeNodes),
+  'AndGate': (lf, node, activeNodes) => handleAndGateNode(lf, node, activeNodes),
+  'OrGate': (lf, node, activeNodes) => handleOrGateNode(lf, node, activeNodes),
+  'NotGate': (lf, node, activeNodes, clickId) => handleNotGateNode(lf, node, activeNodes, clickId ?? '',),
+  'XorGate': (lf, node, activeNodes) => handleXorGateNode(lf, node, activeNodes),
+  'Clock': (lf, node, activeNodes) => handleClockNode(lf, node, activeNodes),
+};
 export {
-    dndData
+    dndData,
+    handlers
 }
