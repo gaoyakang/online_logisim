@@ -1,7 +1,7 @@
 import LogicFlow from "@logicflow/core/types/LogicFlow";
 import { Ref } from "vue";
 import {  activeNodes } from "../nodes";
-import { restoreFromLocalStorage, restoreActiveNodesData } from "../nodes/Util/storageNodes";
+import { restoreFromLocalStorage, restoreActiveNodesData } from "../nodes/util/storageNodes";
 
 
 const renderLF = (lf: LogicFlow, containerRef: Ref<any, any>) => {
