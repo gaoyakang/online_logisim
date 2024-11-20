@@ -1,3 +1,19 @@
+a {
+  color: green; /* 未访问链接的颜色 */
+  text-decoration: none; /* 去除下划线 */
+}
+
+a:visited {
+  color: green; /* 已访问链接的颜色，与未访问链接颜色相同 */
+}
+
+a:hover {
+  color: red; /* 鼠标悬停时链接的颜色 */
+}
+
+a:active {
+  color: green; /* 链接被点击时的颜色 */
+}
 /* dnd-panel-vue.css */
 .lf-dndpanel {
   width: 190px; /* 增加面板宽度 */

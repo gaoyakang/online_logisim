@@ -20,6 +20,9 @@ dependencies:
   vue:
     specifier: ^3.5.12
     version: 3.5.12(typescript@5.6.3)
+  vue-router:
+    specifier: '4'
+    version: 4.4.5(vue@3.5.12)
 
 devDependencies:
   '@types/node':
@@ -575,6 +578,10 @@ packages:
       he: 1.2.0
     dev: true
 
+  /@vue/devtools-api@6.6.4:
+    resolution: {integrity: sha512-sGhTPMuXqZ1rVOk32RylztWkfXTRhuS7vgAKv0zjqk8gbsHkJ7xfFf+jbySxt7tWObEJwyKaHMikV/WGDiQm8g==}
+    dev: false
+
   /@vue/language-core@2.1.10(typescript@5.6.3):
     resolution: {integrity: sha512-DAI289d0K3AB5TUG3xDp9OuQ71CnrujQwJrQnfuZDwo6eGNf0UoRlPuaVNO+Zrn65PC3j0oB2i7mNmVPggeGeQ==}
     peerDependencies:
@@ -959,6 +966,15 @@ packages:
   /vscode-uri@3.0.8:
     resolution: {integrity: sha512-AyFQ0EVmsOZOlAnxoFOGOq1SQDWAB7C6aqMGS23svWAllfOaxbuFvcT8D1i8z3Gyn8fraVeZNNmN6e9bxxXkKw==}
     dev: true
+
+  /vue-router@4.4.5(vue@3.5.12):
+    resolution: {integrity: sha512-4fKZygS8cH1yCyuabAXGUAsyi1b2/o/OKgu/RUb+znIYOxPRxdkytJEx+0wGcpBE1pX6vUgh5jwWOKRGvuA/7Q==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': 6.6.4
+      vue: 3.5.12(typescript@5.6.3)
+    dev: false
 
   /vue-tsc@2.1.10(typescript@5.6.3):
     resolution: {integrity: sha512-RBNSfaaRHcN5uqVqJSZh++Gy/YUzryuv9u1aFWhsammDJXNtUiJMNoJ747lZcQ68wUQFx6E73y4FY3D8E7FGMA==}

@@ -14,7 +14,8 @@
     "@logicflow/extension": "1.1.31",
     "ant-design-vue": "^4.2.5",
     "quarkc": "^1.0.40",
-    "vue": "^3.5.12"
+    "vue": "^3.5.12",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@types/node": "^22.9.0",

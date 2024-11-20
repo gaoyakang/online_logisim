@@ -1,12 +1,8 @@
 <template>
-  <div>
-    <LogicFlowContainer />
-  </div>
+  <router-view> </router-view>
 </template>
 
 <script setup lang="ts">
-import LogicFlowContainer from "./components/LogicFlowContainer/LogicFlowContainer.vue";
-
 </script>
 
 <style scoped>
