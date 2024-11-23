@@ -28,7 +28,6 @@ export function buildTree(lf: LogicFlow) {
     return acc;
   }, {} as AnchorMap);
   
-  // console.log(`nodeAnchors：${nodeAnchors}`)
   // 2.检查每个锚点是否有连线
   // issue#4: https://github.com/gaoyakang/online_logisim/issues/4
   for (const node of nodes) {

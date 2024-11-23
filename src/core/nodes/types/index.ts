@@ -13,12 +13,14 @@ export type ActiveNodes = {
     // active是所有节点维护的代表当前节点导通，即输出为1
     // timer是为了存储clock节点的定时器
     // processedInCurrentRound是为了处理多棵树上的input是否被重复处理了
+    // nextQstate触发器中q的上一状态
     [id: string]: { 
       clicked: boolean, 
       type: string, 
       active: boolean, 
       timer?:Timeout, 
       processedInCurrentRound?: boolean,
+      nextQstate?: string
     };
 }
 

@@ -3,6 +3,7 @@ import { activeNodes, handleNodeClick } from "../nodes";
 import LogicFlow from '@logicflow/core/types/LogicFlow';
 import { dndData } from '../constant';
 import { clearLocalstorage } from '../nodes/util/storageNodes';
+import { ActiveNodes } from '../nodes/types';
 
 
 // 仿真按钮的状态
@@ -41,6 +42,9 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
         // 同时又可能有时钟，需要每隔固定时间遍历一遍节点
         if(simulationActive.value){
           handleNodeClick(that,'',true)
+        }else{
+          // 清空定时器
+          clearClockTimers(activeNodes.value);
         }
         // 获取所有节点
         lf = lf.lf; // bug-#IB3T6D : https://gitee.com/lonelyzoom/online-logisim/issues/IB3T6D
@@ -76,7 +80,11 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
       title: "清空",
       text: "清空",
       /* @ts-ignore */
-      onClick: (lf: any, ev: any) => {
+      onClick: (lf: LogicFlow, ev: any) => {
+        // 清空定时器
+        clearClockTimers(activeNodes.value);
+
+        // 清空数据节点和localstorage
         activeNodes.value = {};
         clearLocalstorage()
 
@@ -111,3 +119,13 @@ const setControlPlugin = (lf: LogicFlow, containerRef: Ref<any, any>) => {
 }
 
 export { setPlugins }
+
+function clearClockTimers(activeNodes: ActiveNodes) {
+  Object.keys(activeNodes).forEach((id) => {
+    const node = activeNodes[id];
+    if (node.type === 'Clock' && node.timer) {
+      clearTimeout(node.timer); // 清除定时器
+      node.timer = undefined; // 将timer置为空，以确保定时器不会被再次清除
+    }
+  });
+}

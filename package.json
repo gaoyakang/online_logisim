@@ -10,8 +10,9 @@
     "analyze": "vite build --mode analyze"
   },
   "dependencies": {
-    "@logicflow/core": "1.1.31",
-    "@logicflow/extension": "1.1.31",
+    "@logicflow/core": "1.1",
+    "@logicflow/extension": "1.1",
+    "@types/vue-router": "^2.0.0",
     "ant-design-vue": "^4.2.5",
     "quarkc": "^1.0.40",
     "vue": "^3.5.12",

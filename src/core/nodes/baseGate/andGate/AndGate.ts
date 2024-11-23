@@ -53,6 +53,8 @@ class AndGateModel extends RectNodeModel {
         super.initNodeData(data);
         this.width = 30;
     }
+
+    
   
     // 节点样式
     getNodeStyle() {
