@@ -61,11 +61,12 @@ const handleRsFlipFlopNode = (lf: LogicFlow, node: BaseNodeModel, activeNodes: R
         break;
       case R === '1' && S === '0':
         // R置位，Q设置为1
-        nextQ = '1';
+        nextQ = '0';
         break;
+      // issue #5 ：https://github.com/gaoyakang/online_logisim/issues/5
       case R === '0' && S === '1':
         // S复位，Q设置为0
-        nextQ = '0';
+        nextQ = '1';
         break;
       case R === '0' && S === '0':
         // 无操作，Q状态保持不变
