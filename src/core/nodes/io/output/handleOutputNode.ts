@@ -22,20 +22,16 @@ const handleOutputNode = (lf: LogicFlow, nodeId: string, activeNodes: Ref<Active
               if(edge.sourceAnchorId === 'rsFlipFlop-righttop-output'){
                 activeNodes = getOutputActive(lf,nodeId,edge,activeNodes)
               }else{
-                // 获得前一节点的active状态
-                const previousNodeActiveState = activeNodes.value[edge.sourceNodeId];
-                // 如果前一节点的active状态为true则需要点亮该output节点，否则不做处理
-                if (previousNodeActiveState && previousNodeActiveState.active) {
-                  updateNodeById(lf,nodeId,false)
-                  // 将当前节点存到全局数组中
-                  activeNodes.value[nodeId] = { clicked:false, type:'Output', active:false };
-                } else {
-                  updateNodeById(lf,nodeId,true)
-                  // 将当前节点存到全局数组中
-                  activeNodes.value[nodeId] = { clicked:false, type:'Output', active:true };
-                }
+                activeNodes = getOutputNotActive(lf,nodeId,edge,activeNodes)
               }
-            } else {
+            } else if (nodeType === 'DFlipFlop'){
+                // 判断当前节点连接的是哪个输出锚点
+                if(edge.sourceAnchorId === 'dFlipFlop-righttop-output'){
+                  activeNodes = getOutputActive(lf,nodeId,edge,activeNodes)
+                }else{
+                  activeNodes = getOutputNotActive(lf,nodeId,edge,activeNodes)
+                }
+            }else {
               activeNodes = getOutputActive(lf,nodeId,edge,activeNodes)
             }             
           }
@@ -60,4 +56,20 @@ const handleOutputNode = (lf: LogicFlow, nodeId: string, activeNodes: Ref<Active
       activeNodes.value[nodeId] = { clicked:false, type:'Output', active:!updateNode };
     }
     return activeNodes;
+  }
+
+  const getOutputNotActive = (lf:LogicFlow, nodeId:string, edge:BaseEdgeModel, activeNodes:Ref<ActiveNodes>) => {
+    // 获得前一节点的active状态
+    const previousNodeActiveState = activeNodes.value[edge.sourceNodeId];
+    // 如果前一节点的active状态为true则需要点亮该output节点，否则不做处理
+    if (previousNodeActiveState && previousNodeActiveState.active) {
+      updateNodeById(lf,nodeId,false)
+      // 将当前节点存到全局数组中
+      activeNodes.value[nodeId] = { clicked:false, type:'Output', active:false };
+    } else {
+      updateNodeById(lf,nodeId,true)
+      // 将当前节点存到全局数组中
+      activeNodes.value[nodeId] = { clicked:false, type:'Output', active:true };
+    }
+    return activeNodes
   }

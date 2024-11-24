@@ -22,7 +22,8 @@ import XorGate from "../../core/nodes/baseGate/xorGate/XorGate";
 import Clock from "../../core/nodes/io/clock/Clock";
 import Input from "../../core/nodes/io/input/Input";
 import Output from "../../core/nodes/io/output/Output";
-import rsFlipFlop from "../../core/nodes/flipFlop/rsFlipFlop/rsFlipFlop";
+import RsFlipFlop from "../../core/nodes/flipFlop/rsFlipFlop/rsFlipFlop";
+import DFlipFlop from "../../core/nodes/flipFlop/dFlipFlop/dFlipFlop";
 
 
   
@@ -33,7 +34,7 @@ import rsFlipFlop from "../../core/nodes/flipFlop/rsFlipFlop/rsFlipFlop";
     let lf = lfInit(containerRef)
   
     // 2.注册节点
-    lf = registerNodes(lf, [ Input, Output, Clock, AndGate, OrGate, NotGate, XorGate, rsFlipFlop])
+    lf = registerNodes(lf, [ Input, Output, Clock, AndGate, OrGate, NotGate, XorGate, RsFlipFlop,DFlipFlop])
   
     // 3.设置插件
     lf = setPlugins(lf, containerRef);
