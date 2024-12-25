@@ -1,6 +1,5 @@
 import { describe, test } from 'vitest'
 
-import { buildTree } from '../sortNodes'
 import LogicFlow from '@logicflow/core'
 
 
