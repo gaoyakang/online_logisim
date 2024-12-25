@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build --mode production",
     "preview": "vite preview",
-    "analyze": "vite build --mode analyze"
+    "analyze": "vite build --mode analyze",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@logicflow/core": "1.1",
@@ -20,9 +22,13 @@
   "devDependencies": {
     "@types/node": "^22.9.3",
     "@vitejs/plugin-vue": "^5.1.4",
+    "@vitest/coverage-v8": "2.1.8",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^15.11.7",
     "typescript": "~5.6.2",
     "vite": "^5.4.10",
     "vite-bundle-analyzer": "^0.13.1",
+    "vitest": "^2.1.8",
     "vue-tsc": "^2.1.8"
   }
 }

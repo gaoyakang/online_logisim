@@ -78,6 +78,7 @@
                     <span class="home-header-title">OnlineLogisim</span>
                 </div>
                 <div class="home-footer-top-right">
+                    <span><a href="https://beian.miit.gov.cn/#/Integrated/index" style="cursor:pointer">津ICP备2020006776号-1</a></span>
                     <span><a>github</a></span>
                     <span><a>bilibili</a></span>
                     <span><a>Copyright © 2024 OnlineLogisim</a></span>

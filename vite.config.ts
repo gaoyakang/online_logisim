@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { analyzer } from "vite-bundle-analyzer";
@@ -30,6 +31,9 @@ export default defineConfig(({ command }) => {
   }
   return {
     plugins,
+    test: {
+      environment: 'happy-dom',
+    },
     build: {
       sourcemap: !isProduction, // 启用 source map
     },
