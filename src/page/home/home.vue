@@ -1,99 +1,124 @@
 <template>
-    <div class="container">
-        <div class="home-header">
-              <div class="home-header-left">
-                <img src="../../assets/img/logisim.ico" alt="">
-                <span class="home-header-title">OnlineLogisim</span>
-            </div>
-            <div class="home-header-right">
-                <span @click="lanuchSimulator" style="cursor: pointer;"><a>模拟器</a></span>
-                <span><a href="http://www.cburch.com/logisim/" target="_blank">关于</a></span>
-                <span style="margin-right: 70px;"><a href="https://github.com/gaoyakang/online_logisim" target="_blank">源码</a></span>
-            </div>
-        </div>
-        <div class="home-content">
-            <div class="home-content-intro">
-                <div class="home-content-intro-left">
-                    <div class="home-content-intro-left-intr">免费深入逻辑电路的世界</div>
-                    <div class="home-content-intro-left-button">
-                          <button @click="lanuchSimulator">启动模拟器</button>
-                    </div>
-                </div>
-                <div class="home-content-intro-right">
-                    <img src="../../assets/img/homeintr.png" class="home-content-intro-right-img">
-                </div>
-            </div>
-            <h1 class="example-title">最佳示例</h1>
-            <div class="home-content-example">
-                <div class="exampl1">
-                    <img src="../../assets/img/example1.jpg" alt="">
-                    <div>
-                        <span>8bit CPU</span>
-                        <button>查看</button>
-                    </div>
-                </div>
-                <div class="exampl2">
-                    <img src="../../assets/img/example2.jpg" alt="">
-                    <div>
-                        <span>16bit CPU</span>
-                        <button>查看</button>
-                    </div>
-                </div>
-                <div class="exampl3">
-                    <img src="../../assets/img/example3.jpg" alt="">
-                    <div>
-                        <span>32bit CPU</span>
-                        <button>查看</button>
-                    </div>
-                </div>
-            </div>
-            <div class="home-content-example">
-                <div class="exampl1">
-                    <img src="../../assets/img/example1.jpg" alt="">
-                    <div>
-                        <span>8bit CPU</span>
-                        <button>查看</button>
-                    </div>
-                </div>
-                <div class="exampl2">
-                    <img src="../../assets/img/example2.jpg" alt="">
-                    <div>
-                        <span>16bit CPU</span>
-                        <button>查看</button>
-                    </div>
-                </div>
-                <div class="exampl3">
-                    <img src="../../assets/img/example3.jpg" alt="">
-                    <div>
-                        <span>32bit CPU</span>
-                        <button>查看</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="home-footer">
-            <div class="home-footer-top">
-                <div class="home-footer-top-left">
-                    <img src="../../assets/img/logisim.ico" alt="">
-                    <span class="home-header-title">OnlineLogisim</span>
-                </div>
-                <div class="home-footer-top-right">
-                    <span><a href="https://beian.miit.gov.cn/#/Integrated/index" style="cursor:pointer">津ICP备2020006776号-1</a></span>
-                    <span><a>github</a></span>
-                    <span><a>bilibili</a></span>
-                    <span><a>Copyright © 2024 OnlineLogisim</a></span>
-                </div>
-            </div>
-        </div>
+  <div class="container">
+    <div class="home-header">
+      <div class="home-header-left">
+        <img src="../../assets/img/logisim.ico" alt="" />
+        <span class="home-header-title">OnlineLogisim</span>
+      </div>
+      <div class="home-header-right">
+        <span @click="() => lanuchSimulator()" style="cursor: pointer"
+          ><a>模拟器</a></span
+        >
+        <span
+          ><a href="http://www.cburch.com/logisim/" target="_blank"
+            >关于</a
+          ></span
+        >
+        <span style="margin-right: 70px"
+          ><a href="https://github.com/gaoyakang/online_logisim" target="_blank"
+            >源码</a
+          ></span
+        >
+      </div>
     </div>
+    <div class="home-content">
+      <div class="home-content-intro">
+        <div class="home-content-intro-left">
+          <div class="home-content-intro-left-intr">免费深入逻辑电路的世界</div>
+          <div class="home-content-intro-left-button">
+            <button @click="() => lanuchSimulator()">启动模拟器</button>
+          </div>
+        </div>
+        <div class="home-content-intro-right">
+          <img
+            src="../../assets/img/homeintr.png"
+            class="home-content-intro-right-img"
+          />
+        </div>
+      </div>
+      <h1 class="example-title">最佳示例</h1>
+      <div class="home-content-example">
+        <div class="exampl1">
+          <img src="../../assets/img/example1.jpg" alt="" />
+          <div>
+            <span>异或门</span>
+            <button @click="() => lanuchSimulator('XOR')">查看</button>
+          </div>
+        </div>
+        <div class="exampl2">
+          <img src="../../assets/img/example2.jpg" alt="" />
+          <div>
+            <span>16bit CPU</span>
+            <button @click="() => lanuchSimulator('')">查看</button>
+          </div>
+        </div>
+        <div class="exampl3">
+          <img src="../../assets/img/example3.jpg" alt="" />
+          <div>
+            <span>32bit CPU</span>
+            <button @click="() => lanuchSimulator('')">查看</button>
+          </div>
+        </div>
+      </div>
+      <div class="home-content-example">
+        <div class="exampl1">
+          <img src="../../assets/img/example1.jpg" alt="" />
+          <div>
+            <span>8bit CPU</span>
+            <button @click="() => lanuchSimulator('')">查看</button>
+          </div>
+        </div>
+        <div class="exampl2">
+          <img src="../../assets/img/example2.jpg" alt="" />
+          <div>
+            <span>16bit CPU</span>
+            <button @click="() => lanuchSimulator('')">查看</button>
+          </div>
+        </div>
+        <div class="exampl3">
+          <img src="../../assets/img/example3.jpg" alt="" />
+          <div>
+            <span>32bit CPU</span>
+            <button @click="() => lanuchSimulator('')">查看</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="home-footer">
+      <div class="home-footer-top">
+        <div class="home-footer-top-left">
+          <img src="../../assets/img/logisim.ico" alt="" />
+          <span class="home-header-title">OnlineLogisim</span>
+        </div>
+        <div class="home-footer-top-right">
+          <span
+            ><a
+              href="https://beian.miit.gov.cn/#/Integrated/index"
+              style="cursor: pointer"
+              >津ICP备2020006776号-1</a
+            ></span
+          >
+          <span><a>github</a></span>
+          <span><a>bilibili</a></span>
+          <span><a>Copyright © 2024 OnlineLogisim</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
-<script lang='ts' setup>
-import { useRouter } from 'vue-router';
+<script lang="ts" setup>
+import { useRouter } from "vue-router";
 
-const router = useRouter()
-const lanuchSimulator = () => {
-  router.push('/simulator')
-}
+const router = useRouter();
+// 跳转到模拟器页面
+const lanuchSimulator = (name?: string) => {
+  // const path = name ? `/simulator?name=${name}` : "/simulator";
+  // router.push(path);
+  router.push({
+    path: "simulator", // 记得在路由表里给这条路由起个 name
+    query: name ? { name } : undefined,
+  });
+};
 </script>
 
 <style scoped>
@@ -137,7 +162,8 @@ span {
   font-size: 24px; /* hover时的字体大小 */
 }
 
-.home-header-title:hover, img:hover {
+.home-header-title:hover,
+img:hover {
   cursor: pointer;
 }
 
@@ -239,7 +265,9 @@ span {
   margin-top: 30px; /* 与上方内容保持一定距离 */
 }
 
-.exampl1, .exampl2, .exampl3 {
+.exampl1,
+.exampl2,
+.exampl3 {
   border: 2px solid green; /* 绿色边框 */
   border-radius: 5px; /* 边框圆角 */
   overflow: hidden; /* 隐藏溢出的内容 */
@@ -248,25 +276,33 @@ span {
   margin: 20px; /* 每个框的外边距 */
 }
 
-.exampl1 img, .exampl2 img, .exampl3 img {
+.exampl1 img,
+.exampl2 img,
+.exampl3 img {
   width: 100%; /* 图片宽度占满框 */
   display: block; /* 避免图片下方出现空隙 */
 }
 
-.exampl1 div, .exampl2 div, .exampl3 div {
+.exampl1 div,
+.exampl2 div,
+.exampl3 div {
   padding: 10px; /* 内边距 */
   display: flex;
   flex-direction: column;
   align-items: center; /* 子元素居中对齐 */
 }
 
-.exampl1 span, .exampl2 span, .exampl3 span {
+.exampl1 span,
+.exampl2 span,
+.exampl3 span {
   margin-bottom: 10px; /* 与按钮之间的间距 */
   border-top: 2px solid green; /* 绿色分隔线 */
   padding-top: 10px; /* 分隔线上方的内边距 */
 }
 
-.exampl1 button, .exampl2 button, .exampl3 button {
+.exampl1 button,
+.exampl2 button,
+.exampl3 button {
   padding: 10px 20px; /* 按钮内边距 */
   background-color: green; /* 绿底 */
   color: white; /* 白字 */
@@ -275,7 +311,9 @@ span {
   transition: transform 0.3s, background-color 0.3s; /* 平滑过渡效果 */
 }
 
-.exampl1 button:hover, .exampl2 button:hover, .exampl3 button:hover {
+.exampl1 button:hover,
+.exampl2 button:hover,
+.exampl3 button:hover {
   transform: translateY(-5px); /* hover时弹起效果 */
   background-color: darkgreen; /* hover时颜色变化 */
 }
