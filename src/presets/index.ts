@@ -200,4 +200,686 @@ export const PRESETS: Record<string, PresetGraph> = {
       },
     ],
   },
+  // 1位半加器
+  OneBitHalfAdder: {
+    name: "oneBitHalfAdder",
+    nodes: [
+      {
+        id: "e4a760ff-f2e1-46ee-a458-e98808fe3e60",
+        type: "Output",
+        x: 620,
+        y: 120,
+      },
+      {
+        id: "9952b558-2339-4fe8-9eb3-ed56ff998813",
+        type: "XorGate",
+        x: 440,
+        y: 100,
+      },
+      {
+        id: "900a9a4f-eceb-429f-8a9b-5971369bbe9d",
+        type: "Input",
+        x: 280,
+        y: 80,
+      },
+      {
+        id: "30db941f-38a7-482d-b68c-40d0d5c7407d",
+        type: "Input",
+        x: 280,
+        y: 200,
+      },
+      {
+        id: "ce2f2a6c-3f3b-46f1-8a6b-6bb917bd1ad4",
+        type: "Output",
+        x: 620,
+        y: 160,
+      },
+      {
+        id: "5acd78cf-2fdd-47a5-8e5d-15c269ce4557",
+        type: "AndGate",
+        x: 460,
+        y: 180,
+      },
+      {
+        id: "900a9a4f-eceb-429f-8a9b-5971369bbe9d",
+        type: "Input",
+        x: 280,
+        y: 80,
+      },
+      {
+        id: "30db941f-38a7-482d-b68c-40d0d5c7407d",
+        type: "Input",
+        x: 280,
+        y: 200,
+      },
+    ],
+    edges: [
+      {
+        id: "0a808929-2647-48a9-a2d5-162d9a2988ed",
+        type: "bezier",
+        startPoint: { x: 300, y: 90 },
+        endPoint: { x: 430, y: 107.5 },
+        pointsList: [
+          { x: 300, y: 90 },
+          { x: 390, y: 90 },
+          { x: 325, y: 107.5 },
+          { x: 430, y: 107.5 },
+        ],
+        properties: {},
+        sourceNodeId: "900a9a4f-eceb-429f-8a9b-5971369bbe9d",
+        targetNodeId: "9952b558-2339-4fe8-9eb3-ed56ff998813",
+        sourceAnchorId: "input-right-output",
+        targetAnchorId: "xorgate-lefttop-input",
+      },
+      {
+        id: "1077c8a1-cb34-495a-a732-3dd280ea2ccf",
+        type: "bezier",
+        startPoint: { x: 300, y: 90 },
+        endPoint: { x: 460, y: 187.5 },
+        pointsList: [
+          { x: 300, y: 90 },
+          { x: 390, y: 90 },
+          { x: 341, y: 181 },
+          { x: 460, y: 187.5 },
+        ],
+        properties: {},
+        sourceNodeId: "900a9a4f-eceb-429f-8a9b-5971369bbe9d",
+        targetNodeId: "5acd78cf-2fdd-47a5-8e5d-15c269ce4557",
+        sourceAnchorId: "input-right-output",
+        targetAnchorId: "andgate-lefttop-input",
+      },
+      {
+        id: "f4e10e99-624c-4d35-b525-5f93f4f95c8e",
+        type: "bezier",
+        startPoint: { x: 300, y: 210 },
+        endPoint: { x: 430, y: 122.5 },
+        pointsList: [
+          { x: 300, y: 210 },
+          { x: 390, y: 210 },
+          { x: 325, y: 115 },
+          { x: 430, y: 122.5 },
+        ],
+        properties: {},
+        sourceNodeId: "30db941f-38a7-482d-b68c-40d0d5c7407d",
+        targetNodeId: "9952b558-2339-4fe8-9eb3-ed56ff998813",
+        sourceAnchorId: "input-right-output",
+        targetAnchorId: "xorgate-leftbottom-input",
+      },
+      {
+        id: "2fd04fb0-f21d-42f7-b160-5020fff434ec",
+        type: "bezier",
+        startPoint: { x: 300, y: 210 },
+        endPoint: { x: 460, y: 202.5 },
+        pointsList: [
+          { x: 300, y: 210 },
+          { x: 390, y: 210 },
+          { x: 378, y: 211 },
+          { x: 460, y: 202.5 },
+        ],
+        properties: {},
+        sourceNodeId: "30db941f-38a7-482d-b68c-40d0d5c7407d",
+        targetNodeId: "5acd78cf-2fdd-47a5-8e5d-15c269ce4557",
+        sourceAnchorId: "input-right-output",
+        targetAnchorId: "andgate-leftbottom-input",
+      },
+      {
+        id: "57227182-29bb-411a-ab43-e7941821d604",
+        type: "bezier",
+        startPoint: { x: 495, y: 115 },
+        endPoint: { x: 610, y: 120 },
+        pointsList: [
+          { x: 495, y: 115 },
+          { x: 555, y: 115 },
+          { x: 553, y: 125 },
+          { x: 610, y: 120 },
+        ],
+        properties: {},
+        sourceNodeId: "9952b558-2339-4fe8-9eb3-ed56ff998813",
+        targetNodeId: "e4a760ff-f2e1-46ee-a458-e98808fe3e60",
+        sourceAnchorId: "xorgate-right-output",
+        targetAnchorId: "output-left-input",
+      },
+      {
+        id: "987ebbe4-7046-4399-9d09-ab9c7d897c9e",
+        type: "bezier",
+        startPoint: { x: 505, y: 195 },
+        endPoint: { x: 610, y: 160 },
+        pointsList: [
+          { x: 505, y: 195 },
+          { x: 575, y: 195 },
+          { x: 554, y: 148 },
+          { x: 610, y: 160 },
+        ],
+        properties: {},
+        sourceNodeId: "5acd78cf-2fdd-47a5-8e5d-15c269ce4557",
+        targetNodeId: "ce2f2a6c-3f3b-46f1-8a6b-6bb917bd1ad4",
+        sourceAnchorId: "andgate-right-output",
+        targetAnchorId: "output-left-input",
+      },
+    ],
+  },
+  // 1位全加器
+  OneBitFullAdder: {
+    name: "oneBitFullAdder",
+    nodes: [
+      {
+        id: "e4a760ff-f2e1-46ee-a458-e98808fe3e60",
+        type: "Output",
+        x: 840,
+        y: 120,
+      },
+      {
+        id: "ee1286d7-5ec4-4ae6-b3eb-bf1042c06399",
+        type: "XorGate",
+        x: 620,
+        y: 40,
+      },
+      {
+        id: "609d5b0c-7db8-413c-bb46-80e5d8fd0054",
+        type: "Input",
+        x: 280,
+        y: 40,
+      },
+      {
+        id: "9952b558-2339-4fe8-9eb3-ed56ff998813",
+        type: "XorGate",
+        x: 440,
+        y: 100,
+      },
+      {
+        id: "900a9a4f-eceb-429f-8a9b-5971369bbe9d",
+        type: "Input",
+        x: 280,
+        y: 80,
+      },
+      {
+        id: "30db941f-38a7-482d-b68c-40d0d5c7407d",
+        type: "Input",
+        x: 280,
+        y: 200,
+      },
+      {
+        id: "ce2f2a6c-3f3b-46f1-8a6b-6bb917bd1ad4",
+        type: "Output",
+        x: 840,
+        y: 180,
+      },
+      {
+        id: "64cc7065-b430-47e1-8ca7-0fe26f72a9a7",
+        type: "OrGate",
+        x: 720,
+        y: 180,
+      },
+      {
+        id: "5acd78cf-2fdd-47a5-8e5d-15c269ce4557",
+        type: "AndGate",
+        x: 460,
+        y: 180,
+      },
+      {
+        id: "900a9a4f-eceb-429f-8a9b-5971369bbe9d",
+        type: "Input",
+        x: 280,
+        y: 80,
+      },
+      {
+        id: "30db941f-38a7-482d-b68c-40d0d5c7407d",
+        type: "Input",
+        x: 280,
+        y: 200,
+      },
+      {
+        id: "4340a28f-60b7-4b59-b867-7c4219c486fe",
+        type: "AndGate",
+        x: 620,
+        y: 140,
+      },
+      {
+        id: "609d5b0c-7db8-413c-bb46-80e5d8fd0054",
+        type: "Input",
+        x: 280,
+        y: 40,
+      },
+      {
+        id: "9952b558-2339-4fe8-9eb3-ed56ff998813",
+        type: "XorGate",
+        x: 440,
+        y: 100,
+      },
+      {
+        id: "900a9a4f-eceb-429f-8a9b-5971369bbe9d",
+        type: "Input",
+        x: 280,
+        y: 80,
+      },
+      {
+        id: "30db941f-38a7-482d-b68c-40d0d5c7407d",
+        type: "Input",
+        x: 280,
+        y: 200,
+      },
+    ],
+    edges: [
+      {
+        id: "0a808929-2647-48a9-a2d5-162d9a2988ed",
+        type: "bezier",
+        startPoint: {
+          x: 300,
+          y: 90,
+        },
+        endPoint: {
+          x: 430,
+          y: 107.5,
+        },
+        pointsList: [
+          {
+            x: 300,
+            y: 90,
+          },
+          {
+            x: 390,
+            y: 90,
+          },
+          {
+            x: 325,
+            y: 107.5,
+          },
+          {
+            x: 430,
+            y: 107.5,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "900a9a4f-eceb-429f-8a9b-5971369bbe9d",
+        targetNodeId: "9952b558-2339-4fe8-9eb3-ed56ff998813",
+        sourceAnchorId: "input-right-output",
+        targetAnchorId: "xorgate-lefttop-input",
+      },
+      {
+        id: "1077c8a1-cb34-495a-a732-3dd280ea2ccf",
+        type: "bezier",
+        startPoint: {
+          x: 300,
+          y: 90,
+        },
+        endPoint: {
+          x: 460,
+          y: 187.5,
+        },
+        pointsList: [
+          {
+            x: 300,
+            y: 90,
+          },
+          {
+            x: 390,
+            y: 90,
+          },
+          {
+            x: 341,
+            y: 181,
+          },
+          {
+            x: 460,
+            y: 187.5,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "900a9a4f-eceb-429f-8a9b-5971369bbe9d",
+        targetNodeId: "5acd78cf-2fdd-47a5-8e5d-15c269ce4557",
+        sourceAnchorId: "input-right-output",
+        targetAnchorId: "andgate-lefttop-input",
+      },
+      {
+        id: "f4e10e99-624c-4d35-b525-5f93f4f95c8e",
+        type: "bezier",
+        startPoint: {
+          x: 300,
+          y: 210,
+        },
+        endPoint: {
+          x: 430,
+          y: 122.5,
+        },
+        pointsList: [
+          {
+            x: 300,
+            y: 210,
+          },
+          {
+            x: 390,
+            y: 210,
+          },
+          {
+            x: 325,
+            y: 115,
+          },
+          {
+            x: 430,
+            y: 122.5,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "30db941f-38a7-482d-b68c-40d0d5c7407d",
+        targetNodeId: "9952b558-2339-4fe8-9eb3-ed56ff998813",
+        sourceAnchorId: "input-right-output",
+        targetAnchorId: "xorgate-leftbottom-input",
+      },
+      {
+        id: "2fd04fb0-f21d-42f7-b160-5020fff434ec",
+        type: "bezier",
+        startPoint: {
+          x: 300,
+          y: 210,
+        },
+        endPoint: {
+          x: 460,
+          y: 202.5,
+        },
+        pointsList: [
+          {
+            x: 300,
+            y: 210,
+          },
+          {
+            x: 390,
+            y: 210,
+          },
+          {
+            x: 378,
+            y: 211,
+          },
+          {
+            x: 460,
+            y: 202.5,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "30db941f-38a7-482d-b68c-40d0d5c7407d",
+        targetNodeId: "5acd78cf-2fdd-47a5-8e5d-15c269ce4557",
+        sourceAnchorId: "input-right-output",
+        targetAnchorId: "andgate-leftbottom-input",
+      },
+      {
+        id: "b73464c6-c4a6-422f-b06e-73b332042bb0",
+        type: "bezier",
+        startPoint: {
+          x: 775,
+          y: 195,
+        },
+        endPoint: {
+          x: 830,
+          y: 180,
+        },
+        pointsList: [
+          {
+            x: 775,
+            y: 195,
+          },
+          {
+            x: 835,
+            y: 195,
+          },
+          {
+            x: 787,
+            y: 182,
+          },
+          {
+            x: 830,
+            y: 180,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "64cc7065-b430-47e1-8ca7-0fe26f72a9a7",
+        targetNodeId: "ce2f2a6c-3f3b-46f1-8a6b-6bb917bd1ad4",
+        sourceAnchorId: "orgate-right-output",
+        targetAnchorId: "output-left-input",
+      },
+      {
+        id: "3773295a-c5fd-4ba2-9ab5-26304ab11d97",
+        type: "bezier",
+        startPoint: {
+          x: 675,
+          y: 55,
+        },
+        endPoint: {
+          x: 830,
+          y: 120,
+        },
+        pointsList: [
+          {
+            x: 675,
+            y: 55,
+          },
+          {
+            x: 735,
+            y: 55,
+          },
+          {
+            x: 690,
+            y: 120,
+          },
+          {
+            x: 830,
+            y: 120,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "ee1286d7-5ec4-4ae6-b3eb-bf1042c06399",
+        targetNodeId: "e4a760ff-f2e1-46ee-a458-e98808fe3e60",
+        sourceAnchorId: "xorgate-right-output",
+        targetAnchorId: "output-left-input",
+      },
+      {
+        id: "df84ab74-7f5d-450f-9f03-57dc629d3d41",
+        type: "bezier",
+        startPoint: {
+          x: 300,
+          y: 50,
+        },
+        endPoint: {
+          x: 610,
+          y: 47.5,
+        },
+        pointsList: [
+          {
+            x: 300,
+            y: 50,
+          },
+          {
+            x: 390,
+            y: 50,
+          },
+          {
+            x: 505,
+            y: 47.5,
+          },
+          {
+            x: 610,
+            y: 47.5,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "609d5b0c-7db8-413c-bb46-80e5d8fd0054",
+        targetNodeId: "ee1286d7-5ec4-4ae6-b3eb-bf1042c06399",
+        sourceAnchorId: "input-right-output",
+        targetAnchorId: "xorgate-lefttop-input",
+      },
+      {
+        id: "210ca8ba-aa2f-401f-b4d9-2c6a4c4731ea",
+        type: "bezier",
+        startPoint: {
+          x: 495,
+          y: 115,
+        },
+        endPoint: {
+          x: 610,
+          y: 62.5,
+        },
+        pointsList: [
+          {
+            x: 495,
+            y: 115,
+          },
+          {
+            x: 555,
+            y: 115,
+          },
+          {
+            x: 519,
+            y: 57,
+          },
+          {
+            x: 610,
+            y: 62.5,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "9952b558-2339-4fe8-9eb3-ed56ff998813",
+        targetNodeId: "ee1286d7-5ec4-4ae6-b3eb-bf1042c06399",
+        sourceAnchorId: "xorgate-right-output",
+        targetAnchorId: "xorgate-leftbottom-input",
+      },
+      {
+        id: "7ec11056-ac91-4bf1-9d2a-18ed0ada377f",
+        type: "bezier",
+        startPoint: {
+          x: 300,
+          y: 50,
+        },
+        endPoint: {
+          x: 620,
+          y: 147.5,
+        },
+        pointsList: [
+          {
+            x: 300,
+            y: 50,
+          },
+          {
+            x: 390,
+            y: 50,
+          },
+          {
+            x: 567,
+            y: 68,
+          },
+          {
+            x: 620,
+            y: 147.5,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "609d5b0c-7db8-413c-bb46-80e5d8fd0054",
+        targetNodeId: "4340a28f-60b7-4b59-b867-7c4219c486fe",
+        sourceAnchorId: "input-right-output",
+        targetAnchorId: "andgate-lefttop-input",
+      },
+      {
+        id: "7748a9c0-8dcd-4c41-8a9e-449a18a365f5",
+        type: "bezier",
+        startPoint: {
+          x: 495,
+          y: 115,
+        },
+        endPoint: {
+          x: 620,
+          y: 162.5,
+        },
+        pointsList: [
+          {
+            x: 495,
+            y: 115,
+          },
+          {
+            x: 555,
+            y: 115,
+          },
+          {
+            x: 517,
+            y: 130,
+          },
+          {
+            x: 620,
+            y: 162.5,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "9952b558-2339-4fe8-9eb3-ed56ff998813",
+        targetNodeId: "4340a28f-60b7-4b59-b867-7c4219c486fe",
+        sourceAnchorId: "xorgate-right-output",
+        targetAnchorId: "andgate-leftbottom-input",
+      },
+      {
+        id: "22ee0cdc-bdf1-4959-a5fa-40083940c508",
+        type: "bezier",
+        startPoint: {
+          x: 505,
+          y: 195,
+        },
+        endPoint: {
+          x: 720,
+          y: 210,
+        },
+        pointsList: [
+          {
+            x: 505,
+            y: 195,
+          },
+          {
+            x: 575,
+            y: 195,
+          },
+          {
+            x: 607,
+            y: 215,
+          },
+          {
+            x: 720,
+            y: 210,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "5acd78cf-2fdd-47a5-8e5d-15c269ce4557",
+        targetNodeId: "64cc7065-b430-47e1-8ca7-0fe26f72a9a7",
+        sourceAnchorId: "andgate-right-output",
+        targetAnchorId: "orgate-left-bottom-input",
+      },
+      {
+        id: "c997cd90-ce0a-4170-b362-483ae9f1ad0e",
+        type: "bezier",
+        startPoint: {
+          x: 665,
+          y: 155,
+        },
+        endPoint: {
+          x: 720,
+          y: 180,
+        },
+        pointsList: [
+          {
+            x: 665,
+            y: 155,
+          },
+          {
+            x: 735,
+            y: 155,
+          },
+          {
+            x: 652,
+            y: 185,
+          },
+          {
+            x: 720,
+            y: 180,
+          },
+        ],
+        properties: {},
+        sourceNodeId: "4340a28f-60b7-4b59-b867-7c4219c486fe",
+        targetNodeId: "64cc7065-b430-47e1-8ca7-0fe26f72a9a7",
+        sourceAnchorId: "andgate-right-output",
+        targetAnchorId: "orgate-left-top-input",
+      },
+    ],
+  },
 };

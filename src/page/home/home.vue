@@ -48,15 +48,19 @@
         <div class="exampl2">
           <img src="../../assets/img/example2.jpg" alt="" />
           <div>
-            <span>16bit CPU</span>
-            <button @click="() => lanuchSimulator('')">查看</button>
+            <span>1bit半加器</span>
+            <button @click="() => lanuchSimulator('OneBitHalfAdder')">
+              查看
+            </button>
           </div>
         </div>
         <div class="exampl3">
           <img src="../../assets/img/example3.jpg" alt="" />
           <div>
-            <span>32bit CPU</span>
-            <button @click="() => lanuchSimulator('')">查看</button>
+            <span>1bit全加器</span>
+            <button @click="() => lanuchSimulator('OneBitFullAdder')">
+              查看
+            </button>
           </div>
         </div>
       </div>
