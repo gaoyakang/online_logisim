@@ -6,27 +6,27 @@
     <title>SVG生成器</title>
     <style>
       body {
-          margin: 0;
-          padding: 0;
-        }
-        .container {
-          position: relative;
-          left: 730px;
-          top: -200px;
-        }
-        #svgInput {
-          width: 300px;
-          height: 100px;
-          margin: 10px 0;
-        }
-        #imgUrl {
-          width: 300px;
-          height: 100px;
-          margin-top: 55px;
-        }
-        button {
-          margin-top: 25px;
-        }
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        position: relative;
+        left: 730px;
+        top: -200px;
+      }
+      #svgInput {
+        width: 300px;
+        height: 100px;
+        margin: 10px 0;
+      }
+      #imgUrl {
+        width: 300px;
+        height: 100px;
+        margin-top: 55px;
+      }
+      button {
+        margin-top: 25px;
+      }
       .grid-container {
         margin-left: 80px;
         margin-top: 100px;
@@ -54,12 +54,19 @@
       .grid-item.black {
         background-color: black;
       }
-      .svgContainer{
+      .svgContainer {
         margin-left: 620px;
         margin-top: -300px;
         width: 37px;
         height: 37px;
         border: 1px solid black;
+      }
+      .sizeWrapper {
+        padding-top: 70px;
+      }
+      #imgSize {
+        font-weight: bold;
+        color: red;
       }
     </style>
   </head>
@@ -81,20 +88,23 @@
         <div>
           <textarea id="svgInput" placeholder="在这里输入SVG代码"></textarea>
         </div>
-        <div style="margin-left: 6px;">
-          <button onClick="svgimgBase64()" class="btn_trans">Svg图转Svg码</button>
+        <div style="margin-left: 6px">
+          <button onClick="svgimgBase64()" class="btn_trans">
+            Svg图转Svg码
+          </button>
           <button onClick="svgBase64()" class="btn_trans">Svg码转Base64</button>
           <button onClick="clearText()">清空输入</button>
         </div>
         <div>
           <div>
+            <div class="sizeWrapper">图片尺寸：<span id="imgSize"></span></div>
             <textarea id="imgUrl" placeholder="生成的Base64地址"></textarea>
           </div>
         </div>
       </div>
     </div>
 
-  <script>
+    <script>
       const gridContainer = document.getElementById("gridContainer");
       const svgCanvas = document.getElementById("svgCanvas");
       const gridSize = 36;
@@ -132,36 +142,66 @@
           }
         }
       }
-      // 同步像素点到svg图案
-      function addOrRemoveRect(svg, item, x, y) {
-        const rect = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "rect"
-        );
-        rect.setAttribute("x", x);
-        rect.setAttribute("y", y);
-        rect.setAttribute("width", 1);
-        rect.setAttribute("height", 1);
-        rect.setAttribute("fill", item.classList.contains('red') ? 'blue' : 'none');
-        rect.setAttribute("stroke", "none");
 
-        // 查找之前的颜色
-        const existingRect = svg.querySelector(`rect[x="${x}"][y="${y}"]`);
-        if (existingRect) {
-          svg.removeChild(existingRect);
+      // 同步像素点到svg图案
+      let pathData = "";
+
+      function addOrRemoveRect(svg, item, x, y) {
+        const isRed = item.classList.contains("red");
+        const cmd = `M${x} ${y}h1v1h-1Z`;
+
+        if (isRed) {
+          pathData += cmd;
+        } else {
+          // 简单移除：重建整个 path（可优化）
+          pathData = pathData.replace(cmd, "");
         }
 
-        svg.appendChild(rect);
+        // 清空旧 path
+        const oldPath = svg.querySelector("path");
+        if (oldPath) svg.removeChild(oldPath);
+
+        if (!pathData) return;
+
+        const path = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "path"
+        );
+        path.setAttribute("d", pathData);
+        path.setAttribute("fill", "blue");
+        svg.appendChild(path);
       }
-      
+
       // 清空输入框
-      function clearText(){
-             document.getElementById("svgInput").value = '';
-             document.getElementById("imgUrl").value = '';
+      function clearText() {
+        document.getElementById("svgInput").value = "";
+        document.getElementById("imgUrl").value = "";
       }
 
       // svg转base64
-      function svgBase64(svgstr='') {
+      // function svgBase64(svgstr = "") {
+      //   // 获取用户输入的SVG字符串
+      //   const svgString = document.getElementById("svgInput").value || svgstr;
+
+      //   // 将SVG字符串转换为DOM节点
+      //   const parser = new DOMParser();
+      //   const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
+      //   const svgNode = svgDoc.documentElement;
+
+      //   // 序列化DOM节点为字符串
+      //   const serializer = new XMLSerializer();
+      //   const s = serializer.serializeToString(svgNode);
+
+      //   // 编码为Base64
+      //   const ImgBase64 = `data:image/svg+xml;base64,${window.btoa(
+      //     unescape(encodeURIComponent(s))
+      //   )}`;
+
+      //   // 将Base64字符串设置到textarea中
+      //   document.getElementById("imgUrl").value = ImgBase64;
+      // }
+      // svg转base64
+      function svgBase64(svgstr = "") {
         // 获取用户输入的SVG字符串
         const svgString = document.getElementById("svgInput").value || svgstr;
 
@@ -175,17 +215,32 @@
         const s = serializer.serializeToString(svgNode);
 
         // 编码为Base64
-        const ImgBase64 = `data:image/svg+xml;base64,${window.btoa(unescape(encodeURIComponent(s)))}`;
+        const base64Data = window.btoa(unescape(encodeURIComponent(s)));
+        const ImgBase64 = `data:image/svg+xml;base64,${base64Data}`;
 
+        // 计算大小（单位：字节）
+        const sizeInBytes = ImgBase64.length;
+        const sizeInKB = (sizeInBytes / 1024).toFixed(2);
 
-        // 将Base64字符串设置到textarea中
-        document.getElementById("imgUrl").value = ImgBase64;
+        // 将Base64字符串和大小信息设置到textarea中
+        document.getElementById("imgUrl").value = `${ImgBase64}`;
+        // （大小：${sizeInBytes} 字节 ≈ ${sizeInKB} KB
+        document.getElementById(
+          "imgSize"
+        ).textContent = `${sizeInBytes} 字节 ≈ ${sizeInKB} KB`;
       }
-      
+
       // 图转svg码
-      function svgimgBase64(){
-        document.getElementById("svgInput").value = document.getElementById("svgCanvas").outerHTML
+      function svgimgBase64() {
+        const svg = document.getElementById("svgCanvas");
+        const path = svg.querySelector("path");
+        const svgString = `
+    <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+      ${path ? path.outerHTML : ""}
+    </svg>
+  `;
+        document.getElementById("svgInput").value = svgString.trim();
       }
-   </script>
+    </script>
   </body>
 </html>
