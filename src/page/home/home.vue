@@ -5,21 +5,34 @@
         <img src="../../assets/img/logisim.ico" alt="" />
         <span class="home-header-title">OnlineLogisim</span>
       </div>
-      <div class="home-header-right">
-        <span @click="() => lanuchSimulator()" style="cursor: pointer"
-          ><a>模拟器</a></span
-        >
+      <!-- 三横按钮 -->
+      <div class="mobile-menu-toggle" @click="toggleMobileMenu">☰</div>
+
+      <!-- PC 导航（桌面端用） -->
+      <nav class="home-header-right">
+        <span @click="lanuchSimulator()"><a href="">模拟器</a></span>
         <span
           ><a href="http://www.cburch.com/logisim/" target="_blank"
             >关于</a
           ></span
         >
-        <span style="margin-right: 70px"
-          ><a href="https://github.com/gaoyakang/online_logisim" target="_blank"
+        <span>
+          <a href="https://github.com/gaoyakang/online_logisim" target="_blank"
             >源码</a
           ></span
         >
-      </div>
+      </nav>
+
+      <!-- ✅ 全宽下拉：直接挂在 header -->
+      <transition name="slide">
+        <div v-if="isMobile && showMobileMenu" class="mobile-dropdown">
+          <span @click="lanuchSimulator()">模拟器</span>
+          <a href="http://www.cburch.com/logisim/" target="_blank">关于</a>
+          <a href="https://github.com/gaoyakang/online_logisim" target="_blank"
+            >源码</a
+          >
+        </div>
+      </transition>
     </div>
     <div class="home-content">
       <div class="home-content-intro">
@@ -104,16 +117,28 @@
           >
           <span><a>github</a></span>
           <span><a>bilibili</a></span>
-          <span><a>Copyright © 2024 OnlineLogisim</a></span>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
+import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
-
 const router = useRouter();
+
+const isMobile = ref(false);
+const showMobileMenu = ref(false); // 移动端菜单显示状态
+
+const checkScreen = () => (isMobile.value = window.innerWidth <= 768);
+const toggleMobileMenu = () => (showMobileMenu.value = !showMobileMenu.value);
+
+// 监听屏幕尺寸变化
+onMounted(() => {
+  checkScreen();
+  window.addEventListener("resize", checkScreen);
+});
+onUnmounted(() => window.removeEventListener("resize", checkScreen));
 // 跳转到模拟器页面
 const lanuchSimulator = (name?: string) => {
   // const path = name ? `/simulator?name=${name}` : "/simulator";
@@ -174,6 +199,7 @@ img:hover {
 .home-header-right {
   display: flex;
   align-items: center; /* 子元素在交叉轴上居中对齐 */
+  margin-right: 40px;
 }
 
 .home-content {
@@ -377,5 +403,209 @@ img:hover {
 .example-box button:hover {
   transform: translateY(-5px); /* hover时弹起效果 */
   background-color: darkgreen; /* hover时颜色变化 */
+}
+
+@media (max-width: 768px) {
+  .home-content-example {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .exampl1,
+  .exampl2,
+  .exampl3 {
+    width: 90%;
+    margin: 10px 0;
+  }
+
+  .exampl1 div,
+  .exampl2 div,
+  .exampl3 div {
+    padding: 10px;
+  }
+
+  .exampl1 span,
+  .exampl2 span,
+  .exampl3 span {
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  .exampl1 button,
+  .exampl2 button,
+  .exampl3 button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+/* ---------- 移动端导航 ---------- */
+.mobile-menu-toggle {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: block;
+  }
+  .home-header-right {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #ccc;
+    width: 120px;
+    display: none; /* 默认收起 */
+  }
+  .home-header-right.show {
+    display: flex; /* 点击后展开 */
+  }
+  .home-header-right span {
+    padding: 12px;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* ---- 一屏适配 ---- */
+  body {
+    overflow-x: hidden;
+  }
+  .container {
+    width: 100vw;
+  }
+  .home-content-intro {
+    flex-direction: column;
+    text-align: center;
+  }
+  .home-content-intro-right-img {
+    max-height: 40vh;
+    width: auto;
+  }
+  .example-title {
+    margin: 15px 0;
+  }
+
+  /* 给 footer 文字加断字 */
+  .home-footer-top-right {
+    display: flex;
+    flex-direction: column;
+    font-size: 8px;
+  }
+
+  /* 兜底：整页禁止横向溢出 */
+  body {
+    overflow-x: hidden;
+  }
+}
+
+/* ===== 移动端下拉菜单 ===== */
+.mobile-nav {
+  position: absolute;
+  top: 97px; /* 紧贴header底部 */
+  right: 0;
+  width: 140px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  z-index: 999;
+}
+
+.mobile-nav a,
+.mobile-nav span {
+  padding: 12px 16px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.mobile-nav a:hover,
+.mobile-nav span:hover {
+  background: #f2f2f2;
+}
+
+/* 下拉动画 */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+/* 桌面端隐藏 */
+@media (min-width: 769px) {
+  .mobile-nav {
+    display: none;
+  }
+}
+
+/* ===== 移动端下拉菜单 ===== */
+/* ===== 真正全宽下拉 ===== */
+.mobile-dropdown {
+  position: absolute;
+  top: 97px; /* header 高度 */
+  left: 0;
+  right: 0; /* 相对于 .home-header 全宽 */
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+}
+
+.mobile-dropdown span,
+.mobile-dropdown a {
+  padding: 12px 16px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.mobile-dropdown span:hover,
+.mobile-dropdown a:hover {
+  background: #f2f2f2;
+}
+
+/* 动画 */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+@media (min-width: 769px) {
+  .mobile-dropdown {
+    display: none;
+  }
+}
+.mobile-dropdown span:hover,
+.mobile-dropdown a:hover {
+  background: #2ecc71; /* 品牌绿 */
+  color: #fff; /* 白字 */
+}
+.mobile-dropdown span,
+.mobile-dropdown a {
+  transition: background 0.2s, color 0.2s;
+}
+/* 移动端让标题离 header 远一点 */
+.home-content-intro-left-intr {
+  margin-top: 30px; /* 按需调大 */
+  font-size: 20px; /* 也可顺便缩小字号 */
 }
 </style>
