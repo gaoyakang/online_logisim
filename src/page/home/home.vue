@@ -10,7 +10,7 @@
 
       <!-- PC 导航（桌面端用） -->
       <nav class="home-header-right">
-        <span @click="lanuchSimulator()"><a href="">模拟器</a></span>
+        <span @click.prevent="lanuchSimulator()"><a href="">模拟器</a></span>
         <span
           ><a href="http://www.cburch.com/logisim/" target="_blank"
             >关于</a
